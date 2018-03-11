@@ -1,4 +1,4 @@
-package at.c02.aai.aai;
+package at.c02.aai.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

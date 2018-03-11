@@ -1,4 +1,4 @@
-package at.c02.aai.aai;
+package at.c02.aai.app;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
