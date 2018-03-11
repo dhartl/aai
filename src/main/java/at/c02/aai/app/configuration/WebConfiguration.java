@@ -3,9 +3,11 @@ package at.c02.aai.app.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfiguration {
+public class WebConfiguration implements WebMvcConfigurer {
 
     @Bean
     public CommonsRequestLoggingFilter requestLoggingFilter() {
@@ -15,5 +17,10 @@ public class WebConfiguration {
 	loggingFilter.setIncludePayload(true);
 	loggingFilter.setIncludeHeaders(false);
 	return loggingFilter;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
     }
 }
