@@ -21,6 +21,9 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	maven{
+		url 'http://maven.vaadin.com/vaadin-addons'
+	}
 }
 
 dependencyManagement {
@@ -39,6 +42,10 @@ dependencies {
 	compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
 	
 	compile group: 'org.locationtech.spatial4j', name: 'spatial4j', version: '0.7'
+	
+	compile('org.vaadin.addon:v-leaflet:2.0.5')
+	compile('org.vaadin.addon:v-leaflet-heat:1.0')
+		
 	
 	runtime('org.springframework.boot:spring-boot-devtools')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
