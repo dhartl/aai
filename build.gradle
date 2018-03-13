@@ -23,10 +23,17 @@ repositories {
 	mavenCentral()
 }
 
+dependencyManagement {
+  imports {
+    mavenBom 'com.vaadin:vaadin-bom:8.3.1'
+  }
+}
+
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('com.vaadin:vaadin-spring-boot-starter:3.0.0')
 	
 	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
 	compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
