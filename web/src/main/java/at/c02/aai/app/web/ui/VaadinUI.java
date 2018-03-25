@@ -9,10 +9,10 @@ import com.vaadin.ui.UI;
 @SpringUI(path = "/ui")
 public class VaadinUI extends UI {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
+    @Override
     protected void init(VaadinRequest request) {
-	    setContent(new Button("Click me", e -> Notification.show("Hello Spring+Vaadin user!")));
+	setContent(new Button("Click me", e -> Notification.show("Hello Spring+Vaadin user!")));
     }
 }
