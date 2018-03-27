@@ -26,7 +26,7 @@ class Details(Item):
 class Hours(Item):
     weekday = Field() # Day of the week; MON, TUE, WED, THU, FRI, SAT, SUN
     from_time = Field()
-    to = Field()
+    to_time = Field()
 
 class Weekdays(Enum):
     MON = 'Montag'

@@ -100,7 +100,7 @@ class ApoSpider(scrapy.Spider):
                     time = Hours(
                         weekday = x.name,
                         from_time = time_split[0],
-                        to = time_split[1]
+                        to_time = time_split[1]
                     )
                     hours.append(time)
         return hours
