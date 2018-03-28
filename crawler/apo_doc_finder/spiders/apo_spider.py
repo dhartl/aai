@@ -16,7 +16,7 @@ class ApoSpider(scrapy.Spider):
 
         items = []
         
-        for detailLink in detailLinks[:2:]:
+        for detailLink in detailLinks:
             detail_page = detailLink.css('a::attr(href)').extract_first()
             if detail_page is not None:
                 detail_page = response.urljoin(detail_page)
