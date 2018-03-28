@@ -69,7 +69,7 @@ class ApoSpider(scrapy.Spider):
 
         items = []
         
-        for detailLink in detailLinks:
+        for detailLink in detailLinks[:5:]:
             detail_page = detailLink.css('a::attr(href)').extract_first()
             if detail_page is not None:
                 detail_page = response.urljoin(detail_page)
@@ -78,10 +78,26 @@ class ApoSpider(scrapy.Spider):
         return items
 
     def parseDetail(self, response):
-        
+        title = response.xpath('//h1[1]').css('h1::innerText').extract_first()
+        print(title) # TODO: text is with line breaks and multiple spaces -> make it nice
 
-
-        geocoder = Geocoder()
-        lat, lng = geocoder.getLatLng(address)
+        #geocoder = Geocoder()
+        #lat, lng = geocoder.getLatLng(address)
         
-        return
+        #item = Details(
+        #    title = details.xpath('./span[1]').css('span::text').extract_first(),
+        #    street = street,
+        #    zipCode = zipCode,
+        #    city = city,
+        #    state = state,
+        #    geoLat = lat,
+        #    geoLon = lng,
+        #    telephoneNumber = response.xpath('//font[text()="Tel.:"]').xpath('../../td[2]/font/a').css('a::attr(href)').extract_first(),
+        #    email = response.xpath('//font[text()="EMail:"]').xpath('../../td[2]/font/a').css('a::text').extract_first(),
+        #    url = response.xpath('//font[text()="Homepage:"]').xpath('../../td[2]/a').css('a::attr(href)').extract_first(),
+        #    specialities = [], # empty for apo's
+        #    hours = self.getHours(response),
+        #    srcUrl = response.url
+        #)
+
+        return title#item
