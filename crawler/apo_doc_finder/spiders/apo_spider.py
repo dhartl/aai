@@ -1,15 +1,14 @@
 import requests
 import scrapy
 from apo_doc_finder.items import Details, Hours, Weekdays
+from apo_doc_finder.helper import Geocoder
 from scrapy.conf import settings
 
 class ApoSpider(scrapy.Spider):
     name = "apo"
-    apikey = None
-
+    
     def start_requests(self):
         url = 'https://www.apotheker.at/internet/oeak/Apotheken.nsf/formWebname?OpenForm'
-        self.apikey = settings.get('GOOGLE_API_KEY', None)
         yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
@@ -17,7 +16,7 @@ class ApoSpider(scrapy.Spider):
 
         items = []
         
-        for detailLink in detailLinks:
+        for detailLink in detailLinks[:2:]:
             detail_page = detailLink.css('a::attr(href)').extract_first()
             if detail_page is not None:
                 detail_page = response.urljoin(detail_page)
@@ -51,7 +50,8 @@ class ApoSpider(scrapy.Spider):
         if state is not None:
             address += ',' + state
 
-        lat, lng = self.getLatLng(address)
+        geocoder = Geocoder()
+        lat, lng = geocoder.getLatLng(address)
 
         item = Details(
             title = details.xpath('./span[1]').css('span::text').extract_first(),
@@ -69,24 +69,7 @@ class ApoSpider(scrapy.Spider):
             srcUrl = response.url
         )
 
-        return item 
-
-    def getLatLng(self, address):
-        # simple retry mechanism if it fails
-        for x in range(0, 3):
-            url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address
-            if self.apikey is not None:
-                url += '&key=' + self.apikey
-            
-            responseGeo = requests.get(url)
-            resp_json_payload = responseGeo.json()
-
-            if(resp_json_payload['status'] == 'OK'):
-                lat = resp_json_payload['results'][0]['geometry']['location']['lat']
-                lng = resp_json_payload['results'][0]['geometry']['location']['lng']
-                return lat, lng
-
-        return 0,0
+        return item
 
     def getHours(self, response):
         hours = []
