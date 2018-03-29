@@ -2,7 +2,7 @@ import requests
 import scrapy
 from apo_doc_finder.items import Details, Hours, Weekdays
 from scrapy.conf import settings
-from apo_doc_finder.helper import Geocoder
+from apo_doc_finder.helper import Geocoder, TextHelper
 
 class ApoSpider(scrapy.Spider):
     name = "doc_ktn"
@@ -69,7 +69,7 @@ class ApoSpider(scrapy.Spider):
 
         items = []
         
-        for detailLink in detailLinks[:5:]:
+        for detailLink in detailLinks:
             detail_page = detailLink.css('a::attr(href)').extract_first()
             if detail_page is not None:
                 detail_page = response.urljoin(detail_page)
@@ -78,26 +78,87 @@ class ApoSpider(scrapy.Spider):
         return items
 
     def parseDetail(self, response):
-        title = response.xpath('//h1[1]').css('h1::innerText').extract_first()
-        print(title) # TODO: text is with line breaks and multiple spaces -> make it nice
+        textHelper = TextHelper()
 
-        #geocoder = Geocoder()
-        #lat, lng = geocoder.getLatLng(address)
+        titleRaw = response.xpath('//h1[1]').css('h1::text').extract_first()
+        title = textHelper.removeUnneccessarySpacesAndNewLines(titleRaw)
+
+        labels = response.xpath('//div[@class="result_label"]')
+        specialities = []
+        street = None
+        city = None
+        zipCode = None
+        telNr = None
+        website = None
+        hours = []
+
+        for l in labels:
+            labelTextRaw = l.css('div::text').extract_first()
+            if labelTextRaw is not None:
+                labelText = labelTextRaw.strip()
+                contents = l.xpath('../div[@class="result_content"]/div')
+                if labelText == 'Fach:':
+                    for c in contents:
+                        specialities.append(textHelper.removeUnneccessarySpacesAndNewLines(c.css('div::text').extract_first()))
+                if labelText == 'Adresse:':
+                    line2 = contents[1].css('div::text').extract_first()
+                    zipCode = line2.split(' ')[0]
+                    city = ' '.join(line2.split(' ')[1::])
+                    streetRaw = contents[0].css('div::text').extract_first().split(' (')[0]
+                    street = textHelper.removeUnneccessarySpacesAndNewLines(streetRaw)
+                if labelText == 'Erreichbarkeiten:':
+                    childs = contents.xpath('./div[@class="result_day_field"]')
+                    for c in childs:
+                        childLabel = c.css('div::text').extract_first()
+                        texts = None
+                        if (childLabel == 'Telefon:') or (childLabel == 'Mobiltelefon:' and telNr is None):
+                            texts = c.xpath('..').css('div::text').extract()
+                            telNr = texts[len(texts) - 1].strip().split(' ')[1]
+                        if childLabel == 'Webseite:':
+                            website = c.xpath('../a[1]').css('a::attr(href)').extract_first()
+                if labelText == 'Ordinationszeiten:':
+                    childs = contents.xpath('./div[@class="result_day_field"]')
+                    hours = self.getHours(childs)
+
+        state = 'Kärnten'
+        geocoder = Geocoder()
+        lat, lng = geocoder.getLatLng(street, zipCode, city, state)
         
-        #item = Details(
-        #    title = details.xpath('./span[1]').css('span::text').extract_first(),
-        #    street = street,
-        #    zipCode = zipCode,
-        #    city = city,
-        #    state = state,
-        #    geoLat = lat,
-        #    geoLon = lng,
-        #    telephoneNumber = response.xpath('//font[text()="Tel.:"]').xpath('../../td[2]/font/a').css('a::attr(href)').extract_first(),
-        #    email = response.xpath('//font[text()="EMail:"]').xpath('../../td[2]/font/a').css('a::text').extract_first(),
-        #    url = response.xpath('//font[text()="Homepage:"]').xpath('../../td[2]/a').css('a::attr(href)').extract_first(),
-        #    specialities = [], # empty for apo's
-        #    hours = self.getHours(response),
-        #    srcUrl = response.url
-        #)
+        item = Details(
+            title = title,
+            street = street,
+            zipCode = zipCode,
+            city = city,
+            state = state,
+            geoLat = lat,
+            geoLon = lng,
+            telephoneNumber = telNr,
+            email = None, # couldn't find any doctor with an email as contact for Kärnten
+            url = website,
+            specialities = specialities,
+            hours = hours,
+            srcUrl = response.url
+        )
 
-        return title#item
+        return item
+
+    def getHours(self, divs):
+        hours = []
+        for div in divs:
+            try:
+                wd = Weekdays(div.css('div::text').extract_first())
+            except ValueError:
+                continue
+
+            contents = div.xpath('..').css('div::text').extract()
+            times = contents[len(contents) - 1].strip()[2:].split(', ')
+            
+            for t in times:
+                time_split = t.split(' - ')
+                time = Hours(
+                    weekday = wd.name,
+                    from_time = time_split[0],
+                    to_time = time_split[1]
+                )
+                hours.append(time)
+        return hours

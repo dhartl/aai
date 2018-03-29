@@ -34,24 +34,8 @@ class ApoSpider(scrapy.Spider):
         city = addressDetails.xpath('./td[2]/font[4]').css('font::text').extract_first()
         state = response.xpath('//font[text()="Bundesland:"]').xpath('../../td[2]/font').css('font::text').extract_first()
 
-        address = ""
-
-        if street is not None:
-            address += street
-
-        if zipCode is not None:
-            address += ',' + zipCode
-        
-        if city is not None:
-            if zipCode is None:
-                address += ','
-            address += city
-
-        if state is not None:
-            address += ',' + state
-
         geocoder = Geocoder()
-        lat, lng = geocoder.getLatLng(address)
+        lat, lng = geocoder.getLatLng(street, zipCode, city, state)
 
         item = Details(
             title = details.xpath('./span[1]').css('span::text').extract_first(),
@@ -61,7 +45,7 @@ class ApoSpider(scrapy.Spider):
             state = state,
             geoLat = lat,
             geoLon = lng,
-            telephoneNumber = response.xpath('//font[text()="Tel.:"]').xpath('../../td[2]/font/a').css('a::attr(href)').extract_first(),
+            telephoneNumber = response.xpath('//font[text()="Tel.:"]').xpath('../../td[2]/font').css('font::text').extract_first(),
             email = response.xpath('//font[text()="EMail:"]').xpath('../../td[2]/font/a').css('a::text').extract_first(),
             url = response.xpath('//font[text()="Homepage:"]').xpath('../../td[2]/a').css('a::attr(href)').extract_first(),
             specialities = [], # empty for apo's
