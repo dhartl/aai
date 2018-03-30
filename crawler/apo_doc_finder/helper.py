@@ -40,12 +40,6 @@ class Geocoder():
 
 class TextHelper():
     def removeUnneccessarySpacesAndNewLines(self, rawText):
-        splitsRaw = rawText.split(' ')
-        splits = []
-
-        for sRaw in splitsRaw:
-            s = sRaw.rstrip()
-            if s:
-                splits.append(s)
-
+        splits = rawText.split()
+        
         return ' '.join(splits)
