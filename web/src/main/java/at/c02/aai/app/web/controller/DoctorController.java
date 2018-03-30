@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import at.c02.aai.app.service.DoctorImportService;
 import at.c02.aai.app.service.DoctorService;
 import at.c02.aai.app.web.api.DoctorDTO;
 
@@ -21,24 +22,34 @@ import at.c02.aai.app.web.api.DoctorDTO;
 @RequestMapping("/doctor")
 public class DoctorController {
 
-    @Autowired
-    private DoctorService doctorService;
+	@Autowired
+	private DoctorService doctorService;
 
-    @PutMapping
-    @ResponseBody
-    public DoctorDTO create(@RequestBody DoctorDTO doctorDto) {
-	return doctorService.createDoctor(doctorDto);
-    }
+	@Autowired
+	private DoctorImportService doctorImportService;
 
-    @DeleteMapping(path = "/{doctorId}")
-    public ResponseEntity<Void> delete(@PathVariable(name = "doctorId", required = true) Long doctorId) {
-	doctorService.deleteDoctor(doctorId);
-	return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@PutMapping
+	@ResponseBody
+	public DoctorDTO create(@RequestBody DoctorDTO doctorDto) {
+		return doctorService.createDoctor(doctorDto);
+	}
 
-    @GetMapping
-    @ResponseBody
-    public List<DoctorDTO> getAll() {
-	return doctorService.getAll();
-    }
+	@DeleteMapping(path = "/{doctorId}")
+	public ResponseEntity<Void> delete(@PathVariable(name = "doctorId", required = true) Long doctorId) {
+		doctorService.deleteDoctor(doctorId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping
+	@ResponseBody
+	public List<DoctorDTO> getAll() {
+		return doctorService.getAll();
+	}
+
+	@PutMapping("/import")
+	@ResponseBody
+	public List<at.c02.aai.app.web.api.in.DoctorDTO> importDoctors(
+			@RequestBody List<at.c02.aai.app.web.api.in.DoctorDTO> doctors) {
+		return doctorImportService.importDoctors(doctors);
+	}
 }

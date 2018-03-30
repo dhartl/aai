@@ -1,14 +1,13 @@
 {
 	"info": {
+		"_postman_id": "c21ac949-71a4-4917-a239-52affe53f050",
 		"name": "AAI",
-		"_postman_id": "5f512515-6f02-4eac-9fe2-3d2cc7e191ca",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Doctor",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "CreateDoctor1",
@@ -35,8 +34,7 @@
 								"aai",
 								"doctor"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -65,8 +63,7 @@
 								"aai",
 								"doctor"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -75,7 +72,10 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:9872/aai/doctor/1",
 							"protocol": "http",
@@ -88,8 +88,37 @@
 								"doctor",
 								"1"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import Doctors",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
 						},
-						"description": ""
+						"url": {
+							"raw": "http://localhost:9872/aai/doctor/import",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"doctor",
+								"import"
+							]
+						}
 					},
 					"response": []
 				}
@@ -97,7 +126,7 @@
 		},
 		{
 			"name": "Pharmacy",
-			"description": "",
+			"description": null,
 			"item": [
 				{
 					"name": "CreatePharmacy1",
@@ -124,8 +153,7 @@
 								"aai",
 								"pharmacy"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -154,8 +182,7 @@
 								"aai",
 								"pharmacy"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -164,7 +191,10 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:9872/aai/pharmacy/1",
 							"protocol": "http",
@@ -177,8 +207,7 @@
 								"pharmacy",
 								"1"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
