@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import at.c02.aai.app.service.PharmacyImportService;
 import at.c02.aai.app.service.PharmacyService;
 import at.c02.aai.app.web.api.PharmacyDTO;
 
@@ -21,24 +22,34 @@ import at.c02.aai.app.web.api.PharmacyDTO;
 @RequestMapping("/pharmacy")
 public class PharmacyController {
 
-    @Autowired
-    private PharmacyService pharmacyService;
+	@Autowired
+	private PharmacyService pharmacyService;
 
-    @PutMapping
-    @ResponseBody
-    public PharmacyDTO create(@RequestBody PharmacyDTO pharmacyDto) {
-	return pharmacyService.createPharmacy(pharmacyDto);
-    }
+	@Autowired
+	private PharmacyImportService pharmacyImportService;
 
-    @DeleteMapping(path = "/{pharmacyId}")
-    public ResponseEntity<Void> delete(@PathVariable(name = "pharmacyId", required = true) Long pharmacyId) {
-	pharmacyService.deletePharmacy(pharmacyId);
-	return new ResponseEntity<>(HttpStatus.OK);
-    }
+	@PutMapping
+	@ResponseBody
+	public PharmacyDTO create(@RequestBody PharmacyDTO pharmacyDto) {
+		return pharmacyService.createPharmacy(pharmacyDto);
+	}
 
-    @GetMapping
-    @ResponseBody
-    public List<PharmacyDTO> getAll() {
-	return pharmacyService.getAll();
-    }
+	@DeleteMapping(path = "/{pharmacyId}")
+	public ResponseEntity<Void> delete(@PathVariable(name = "pharmacyId", required = true) Long pharmacyId) {
+		pharmacyService.deletePharmacy(pharmacyId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping
+	@ResponseBody
+	public List<PharmacyDTO> getAll() {
+		return pharmacyService.getAll();
+	}
+
+	@PutMapping("/import")
+	@ResponseBody
+	public List<at.c02.aai.app.web.api.in.PharmacyDTO> importDoctors(
+			@RequestBody List<at.c02.aai.app.web.api.in.PharmacyDTO> pharmacies) {
+		return pharmacyImportService.importPharmacys(pharmacies);
+	}
 }
