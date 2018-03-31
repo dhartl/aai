@@ -17,6 +17,7 @@ import org.vaadin.addon.leafletheat.LHeatMapLayer;
 import org.vaadin.addon.leafletheat.Point3D;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -49,7 +50,8 @@ public class VaadinUI extends UI {
 		map.addBaseLayer(basemapLayer, "Basemap");
 		map.setView(47.069241d, 15.438473d, 13d);
 		// createDoctorMarkers(map);
-		createHeatmap(map);
+		// createHeatmap(map);
+		createPharmacyMarkers(map);
 		setContent(map);
 
 	}
@@ -57,6 +59,13 @@ public class VaadinUI extends UI {
 	private void createDoctorMarkers(LMap map) {
 		LLayerGroup doctorMarkerGroup = new LLayerGroup();
 		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
+		doctors.stream().map(this::createMarker).forEach(doctorMarkerGroup::addComponent);
+		map.addLayer(doctorMarkerGroup);
+	}
+
+	private void createPharmacyMarkers(LMap map) {
+		LLayerGroup doctorMarkerGroup = new LLayerGroup();
+		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.PHARMACY);
 		doctors.stream().map(this::createMarker).forEach(doctorMarkerGroup::addComponent);
 		map.addLayer(doctorMarkerGroup);
 	}
@@ -94,9 +103,21 @@ public class VaadinUI extends UI {
 			return null;
 		}
 		LMarker marker = new LMarker(new Point(facility.getGeoLat().doubleValue(), facility.getGeoLon().doubleValue()));
-		marker.setIcon(new ThemeResource("images/doctor.png"));
+		marker.setIcon(getFacilityImage(facility.getFacilityType()));
 		marker.setPopup(facility.getTitle());
 		marker.setIconAnchor(new Point(16, 37));
 		return marker;
+	}
+
+	private Resource getFacilityImage(FacilityType facilityType) {
+		switch (facilityType) {
+		case DOCTOR:
+			return new ThemeResource("images/doctor.png");
+		case PHARMACY:
+			return new ThemeResource("images/pharmacy.png");
+		default:
+			break;
+		}
+		return null;
 	}
 }
