@@ -1,13 +1,20 @@
 package at.c02.aai.app.web.ui;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.addon.leaflet.LLayerGroup;
 import org.vaadin.addon.leaflet.LMap;
 import org.vaadin.addon.leaflet.LMarker;
 import org.vaadin.addon.leaflet.LTileLayer;
 import org.vaadin.addon.leaflet.shared.Point;
+import org.vaadin.addon.leafletheat.LHeatMapLayer;
+import org.vaadin.addon.leafletheat.Point3D;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ThemeResource;
@@ -15,17 +22,25 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.UI;
 
-import at.c02.aai.app.db.entity.Doctor;
-import at.c02.aai.app.db.repository.DoctorRepository;
+import at.c02.aai.app.db.entity.Facility;
+import at.c02.aai.app.db.entity.FacilityType;
+import at.c02.aai.app.db.repository.FacilityRepository;
+import at.c02.aai.app.service.DistanceService;
+import at.c02.aai.app.service.bean.DistanceBean;
 
 @SpringUI(path = "/ui")
 @Theme("aai")
 public class VaadinUI extends UI {
 
-	@Autowired
-	private DoctorRepository doctorRepository;
+	private static final Logger logger = LoggerFactory.getLogger(VaadinUI.class);
 
 	private static final long serialVersionUID = 1L;
+
+	@Autowired
+	private FacilityRepository facilityRepository;
+
+	@Autowired
+	private DistanceService distanceService;
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -33,22 +48,54 @@ public class VaadinUI extends UI {
 		LTileLayer basemapLayer = new LBasemapLayer();
 		map.addBaseLayer(basemapLayer, "Basemap");
 		map.setView(47.069241d, 15.438473d, 13d);
-		LLayerGroup doctorMarkerGroup = new LLayerGroup();
-		List<Doctor> doctors = doctorRepository.findAllWithFacility();
-		doctors.stream().map(this::createMarker).forEach(doctorMarkerGroup::addComponent);
-		map.addLayer(doctorMarkerGroup);
+		// createDoctorMarkers(map);
+		createHeatmap(map);
 		setContent(map);
 
 	}
 
-	private LMarker createMarker(Doctor doctor) {
-		if(doctor.getFacility().getGeoLat() == null || doctor.getFacility().getGeoLon() == null) {
+	private void createDoctorMarkers(LMap map) {
+		LLayerGroup doctorMarkerGroup = new LLayerGroup();
+		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
+		doctors.stream().map(this::createMarker).forEach(doctorMarkerGroup::addComponent);
+		map.addLayer(doctorMarkerGroup);
+	}
+
+	private void createHeatmap(LMap map) {
+
+		LHeatMapLayer heatmapLayer = new LHeatMapLayer();
+		heatmapLayer.setPoints(getPoints());
+		HashMap<Double, String> gradient = new LinkedHashMap<>();
+		gradient.put(0.4, "blue");
+		gradient.put(0.65, "lime");
+		gradient.put(1.0, "red");
+
+		heatmapLayer.setGradient(gradient);
+
+		heatmapLayer.setRadius(20);
+		heatmapLayer.setBlur(30);
+		heatmapLayer.setMaxZoom(14);
+
+		map.addLayer(heatmapLayer);
+	}
+
+	private Point[] getPoints() {
+		logger.debug("before requesting distances for heatmap");
+		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
+		List<DistanceBean> distances = distanceService.createDistances(doctors, doctors, 500);
+		logger.debug("found {} distances for heatmap", distances.size());
+		List<Point3D> points = distances.stream().map(distance -> new Point3D(distance.getGeoLat().doubleValue(),
+				distance.getGeoLon().doubleValue(), distance.getCount() / 10d)).collect(Collectors.toList());
+		return points.toArray(new Point[0]);
+	}
+
+	private LMarker createMarker(Facility facility) {
+		if (facility.getGeoLat() == null || facility.getGeoLon() == null) {
 			return null;
 		}
-		LMarker marker = new LMarker(new Point(doctor.getFacility().getGeoLat().doubleValue(),
-				doctor.getFacility().getGeoLon().doubleValue()));
+		LMarker marker = new LMarker(new Point(facility.getGeoLat().doubleValue(), facility.getGeoLon().doubleValue()));
 		marker.setIcon(new ThemeResource("images/doctor.png"));
-		marker.setPopup(doctor.getFacility().getTitle());
+		marker.setPopup(facility.getTitle());
 		marker.setIconAnchor(new Point(16, 37));
 		return marker;
 	}
