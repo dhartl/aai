@@ -50,8 +50,10 @@ public class VaadinUI extends UI {
 		map.addBaseLayer(basemapLayer, "Basemap");
 		map.setView(47.069241d, 15.438473d, 13d);
 		// createDoctorMarkers(map);
-		// createHeatmap(map);
-		createPharmacyMarkers(map);
+		// createHeatmap(map, getDoctorPoints());
+		// createPharmacyMarkers(map);
+
+		createHeatmap(map, getPharmaciesDoctorPoints());
 		setContent(map);
 
 	}
@@ -70,10 +72,10 @@ public class VaadinUI extends UI {
 		map.addLayer(doctorMarkerGroup);
 	}
 
-	private void createHeatmap(LMap map) {
+	private void createHeatmap(LMap map, Point[] points) {
 
 		LHeatMapLayer heatmapLayer = new LHeatMapLayer();
-		heatmapLayer.setPoints(getPoints());
+		heatmapLayer.setPoints(points);
 		HashMap<Double, String> gradient = new LinkedHashMap<>();
 		gradient.put(0.4, "blue");
 		gradient.put(0.65, "lime");
@@ -88,13 +90,25 @@ public class VaadinUI extends UI {
 		map.addLayer(heatmapLayer);
 	}
 
-	private Point[] getPoints() {
+	private Point[] getDoctorPoints() {
 		logger.debug("before requesting distances for heatmap");
 		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
 		List<DistanceBean> distances = distanceService.createDistances(doctors, doctors, 500);
 		logger.debug("found {} distances for heatmap", distances.size());
 		List<Point3D> points = distances.stream().map(distance -> new Point3D(distance.getGeoLat().doubleValue(),
 				distance.getGeoLon().doubleValue(), distance.getCount() / 10d)).collect(Collectors.toList());
+		return points.toArray(new Point[0]);
+	}
+
+	private Point[] getPharmaciesDoctorPoints() {
+		logger.debug("before requesting distances for heatmap");
+		List<Facility> pharmacies = facilityRepository.findByFacilityType(FacilityType.PHARMACY);
+		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
+
+		List<DistanceBean> distances = distanceService.createDistances(pharmacies, doctors, 1000);
+		logger.debug("found {} distances for heatmap", distances.size());
+		List<Point3D> points = distances.stream().map(distance -> new Point3D(distance.getGeoLat().doubleValue(),
+				distance.getGeoLon().doubleValue(), distance.getCount() / 5d)).collect(Collectors.toList());
 		return points.toArray(new Point[0]);
 	}
 
