@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.addon.leaflet.LLayerGroup;
 import org.vaadin.addon.leaflet.LMap;
 import org.vaadin.addon.leaflet.LMarker;
 import org.vaadin.addon.leaflet.LTileLayer;
+import org.vaadin.addon.leaflet.markercluster.LMarkerClusterGroup;
 import org.vaadin.addon.leaflet.shared.Point;
 import org.vaadin.addon.leafletheat.LHeatMapLayer;
 import org.vaadin.addon.leafletheat.Point3D;
@@ -49,27 +49,26 @@ public class VaadinUI extends UI {
 		LTileLayer basemapLayer = new LBasemapLayer();
 		map.addBaseLayer(basemapLayer, "Basemap");
 		map.setView(47.069241d, 15.438473d, 13d);
-		// createDoctorMarkers(map);
+		LMarkerClusterGroup markerGroup = new LMarkerClusterGroup();
+		markerGroup.setDisableClusteringAtZoom(13);
+		createDoctorMarkers(markerGroup);
+		createPharmacyMarkers(markerGroup);
+		map.addLayer(markerGroup);
 		// createHeatmap(map, getDoctorPoints());
-		// createPharmacyMarkers(map);
 
 		createHeatmap(map, getPharmaciesDoctorPoints());
 		setContent(map);
 
 	}
 
-	private void createDoctorMarkers(LMap map) {
-		LLayerGroup doctorMarkerGroup = new LLayerGroup();
+	private void createDoctorMarkers(LMarkerClusterGroup markerGroup) {
 		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
-		doctors.stream().map(this::createMarker).forEach(doctorMarkerGroup::addComponent);
-		map.addLayer(doctorMarkerGroup);
+		doctors.stream().map(this::createMarker).forEach(markerGroup::addComponent);
 	}
 
-	private void createPharmacyMarkers(LMap map) {
-		LLayerGroup doctorMarkerGroup = new LLayerGroup();
+	private void createPharmacyMarkers(LMarkerClusterGroup markerGroup) {
 		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.PHARMACY);
-		doctors.stream().map(this::createMarker).forEach(doctorMarkerGroup::addComponent);
-		map.addLayer(doctorMarkerGroup);
+		doctors.stream().map(this::createMarker).forEach(markerGroup::addComponent);
 	}
 
 	private void createHeatmap(LMap map, Point[] points) {
@@ -82,9 +81,9 @@ public class VaadinUI extends UI {
 		gradient.put(1.0, "red");
 
 		heatmapLayer.setGradient(gradient);
-
-		heatmapLayer.setRadius(20);
-		heatmapLayer.setBlur(30);
+		heatmapLayer.setMinOpacity(.1);
+		heatmapLayer.setRadius(50);
+		heatmapLayer.setBlur(75);
 		heatmapLayer.setMaxZoom(14);
 
 		map.addLayer(heatmapLayer);
@@ -93,7 +92,7 @@ public class VaadinUI extends UI {
 	private Point[] getDoctorPoints() {
 		logger.debug("before requesting distances for heatmap");
 		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
-		List<DistanceBean> distances = distanceService.createDistances(doctors, doctors, 500);
+		List<DistanceBean> distances = distanceService.createDistances(doctors, doctors, 1000);
 		logger.debug("found {} distances for heatmap", distances.size());
 		List<Point3D> points = distances.stream().map(distance -> new Point3D(distance.getGeoLat().doubleValue(),
 				distance.getGeoLon().doubleValue(), distance.getCount() / 10d)).collect(Collectors.toList());
@@ -105,7 +104,7 @@ public class VaadinUI extends UI {
 		List<Facility> pharmacies = facilityRepository.findByFacilityType(FacilityType.PHARMACY);
 		List<Facility> doctors = facilityRepository.findByFacilityType(FacilityType.DOCTOR);
 
-		List<DistanceBean> distances = distanceService.createDistances(pharmacies, doctors, 1000);
+		List<DistanceBean> distances = distanceService.createDistances(pharmacies, doctors, 1500);
 		logger.debug("found {} distances for heatmap", distances.size());
 		List<Point3D> points = distances.stream().map(distance -> new Point3D(distance.getGeoLat().doubleValue(),
 				distance.getGeoLon().doubleValue(), distance.getCount() / 5d)).collect(Collectors.toList());
