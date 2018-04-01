@@ -6,92 +6,9 @@
 	},
 	"item": [
 		{
-			"name": "Doctor",
+			"name": "Import",
 			"description": null,
 			"item": [
-				{
-					"name": "CreateDoctor1",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"Dr. Maik Gottschalk\", \"geoLat\":\"47.055775\", \"geoLon\":\"15.410430\"}"
-						},
-						"url": {
-							"raw": "http://localhost:9872/aai/doctor",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"doctor"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetDoctors",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"Dr. Maik Gottschalk\", \"geoLat\":\"47.055775\", \"geoLon\":\"15.410430\"}"
-						},
-						"url": {
-							"raw": "http://localhost:9872/aai/doctor",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"doctor"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DeleteDoctor",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:9872/aai/doctor/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"doctor",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Import Doctors",
 					"request": {
@@ -121,15 +38,9 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Pharmacy",
-			"description": null,
-			"item": [
+				},
 				{
-					"name": "CreatePharmacy1",
+					"name": "Import pharmacys",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -139,64 +50,11 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"St. Hubertus Apotheke\", \"geoLat\":\"47.041650\", \"geoLon\":\"15.467077\"}"
+							"mode": "file",
+							"file": {}
 						},
 						"url": {
-							"raw": "http://localhost:9872/aai/pharmacy",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"pharmacy"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetPharmacys",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"Dr. Maik Gottschalk\", \"geoLat\":\"47.055775\", \"geoLon\":\"15.410430\"}"
-						},
-						"url": {
-							"raw": "http://localhost:9872/aai/pharmacy",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"pharmacy"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DeletePharmacy",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:9872/aai/pharmacy/1",
+							"raw": "http://localhost:9872/aai/pharmacy/import",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -205,7 +63,7 @@
 							"path": [
 								"aai",
 								"pharmacy",
-								"1"
+								"import"
 							]
 						}
 					},
