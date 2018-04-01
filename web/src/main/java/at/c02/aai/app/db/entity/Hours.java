@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,6 +20,9 @@ public class Hours extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "hoursId")
 	private Long hoursId;
+	@ManyToOne
+	@JoinColumn(name = "facilityId", nullable = false)
+	private Facility facility;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "weekday", nullable = false)
 	private WeekDay weekday;
@@ -37,6 +42,14 @@ public class Hours extends BaseEntity {
 
 	public void setHoursId(Long hoursId) {
 		this.hoursId = hoursId;
+	}
+
+	public Facility getFacility() {
+		return facility;
+	}
+
+	public void setFacility(Facility facility) {
+		this.facility = facility;
 	}
 
 	public WeekDay getWeekday() {
