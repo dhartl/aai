@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import at.c02.aai.app.service.DoctorImportService;
+import at.c02.aai.app.web.api.in.DoctorDTO;
 
 @Controller
 @RequestMapping("/doctor")
@@ -20,8 +21,7 @@ public class DoctorController {
 
 	@PutMapping("/import")
 	@ResponseBody
-	public List<at.c02.aai.app.web.api.in.DoctorDTO> importDoctors(
-			@RequestBody List<at.c02.aai.app.web.api.in.DoctorDTO> doctors) {
+	public List<DoctorDTO> importDoctors(@RequestBody List<DoctorDTO> doctors) {
 		return doctorImportService.importDoctors(doctors);
 	}
 }

@@ -1,10 +1,12 @@
 package at.c02.aai.app.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +22,14 @@ public class InsuranceImportService {
 	private InsuranceRepository insuranceRepository;
 
 	public List<InsuranceDTO> importInsurances(List<InsuranceDTO> insurances) {
-		return insurances.stream().map(this::mapFromDTO).map(insuranceRepository::save).map(this::mapToDTO)
-				.collect(Collectors.toList());
+		return insurances.stream().map(this::mapFromDTO).filter(insurance -> Objects.nonNull(insurance.getName()))
+				.map(insuranceRepository::save).map(this::mapToDTO).collect(Collectors.toList());
 	}
 
 	private Insurance mapFromDTO(InsuranceDTO insuranceDto) {
 		Insurance insurance = new Insurance();
-		insurance.setCode(insuranceDto.getCode());
-		insurance.setName(insuranceDto.getName());
+		insurance.setCode(StringUtils.trimToNull(insuranceDto.getCode()));
+		insurance.setName(StringUtils.trimToNull(insuranceDto.getName()));
 		return insurance;
 	}
 

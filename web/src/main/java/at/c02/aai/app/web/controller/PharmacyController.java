@@ -10,19 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import at.c02.aai.app.service.PharmacyImportService;
+import at.c02.aai.app.web.api.in.PharmacyDTO;
 
 @Controller
 @RequestMapping("/pharmacy")
 public class PharmacyController {
-
 
 	@Autowired
 	private PharmacyImportService pharmacyImportService;
 
 	@PutMapping("/import")
 	@ResponseBody
-	public List<at.c02.aai.app.web.api.in.PharmacyDTO> importDoctors(
-			@RequestBody List<at.c02.aai.app.web.api.in.PharmacyDTO> pharmacies) {
+	public List<PharmacyDTO> importDoctors(@RequestBody List<PharmacyDTO> pharmacies) {
 		return pharmacyImportService.importPharmacys(pharmacies);
 	}
 }
