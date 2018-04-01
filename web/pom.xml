@@ -94,6 +94,11 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		</dependency>
+		<dependency>
+		   <groupId>org.vaadin.addons</groupId>
+		   <artifactId>v-leaflet-markercluster</artifactId>
+		   <version>1.1.0</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
