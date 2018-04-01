@@ -1,14 +1,20 @@
 package at.c02.aai.app.db.entity;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,12 +32,12 @@ public class Facility {
     private String title;
     @Column(name = "street", length = 255)
     private String street;
-    @Column(name = "houseNumber", length = 100)
-    private String houseNumber;
     @Column(name = "zipCode", length = 20)
     private String zipCode;
     @Column(name = "city", length = 255)
     private String city;
+	@Column(name = "state", length = 255)
+	private String state;
     /**
      * Geo-Latitude WGS84
      */
@@ -43,76 +49,130 @@ public class Facility {
     @Column(name = "geoLon")
     private BigDecimal geoLon;
 
-    public Long getFacilityId() {
-	return facilityId;
-    }
+	@Column(name = "telephoneNr", length = 100)
+	private String telephoneNr;
+	@Column(name = "email", length = 255)
+	private String email;
+	@Column(name = "url", length = 255)
+	private String url;
+	@Column(name = "srcUrl", length = 255)
+	private String srcUrl;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "facilityId")
+	private Set<Hours> hours = new LinkedHashSet<>(0);
 
-    public void setFacilityId(Long facilityId) {
-	this.facilityId = facilityId;
-    }
+	public Long getFacilityId() {
+		return facilityId;
+	}
 
-    public FacilityType getFacilityType() {
-	return facilityType;
-    }
+	public void setFacilityId(Long facilityId) {
+		this.facilityId = facilityId;
+	}
 
-    public void setFacilityType(FacilityType facilityType) {
-	this.facilityType = facilityType;
-    }
+	public FacilityType getFacilityType() {
+		return facilityType;
+	}
 
-    public String getTitle() {
-	return title;
-    }
+	public void setFacilityType(FacilityType facilityType) {
+		this.facilityType = facilityType;
+	}
 
-    public void setTitle(String title) {
-	this.title = title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getStreet() {
-	return street;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setStreet(String street) {
-	this.street = street;
-    }
+	public String getStreet() {
+		return street;
+	}
 
-    public String getHouseNumber() {
-	return houseNumber;
-    }
+	public void setStreet(String street) {
+		this.street = street;
+	}
 
-    public void setHouseNumber(String houseNumber) {
-	this.houseNumber = houseNumber;
-    }
+	public String getZipCode() {
+		return zipCode;
+	}
 
-    public String getZipCode() {
-	return zipCode;
-    }
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
 
-    public void setZipCode(String zipCode) {
-	this.zipCode = zipCode;
-    }
+	public String getCity() {
+		return city;
+	}
 
-    public String getCity() {
-	return city;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    public void setCity(String city) {
-	this.city = city;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public BigDecimal getGeoLat() {
-	return geoLat;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    public void setGeoLat(BigDecimal geoLat) {
-	this.geoLat = geoLat;
-    }
+	public BigDecimal getGeoLat() {
+		return geoLat;
+	}
 
-    public BigDecimal getGeoLon() {
-	return geoLon;
-    }
+	public void setGeoLat(BigDecimal geoLat) {
+		this.geoLat = geoLat;
+	}
 
-    public void setGeoLon(BigDecimal geoLon) {
-	this.geoLon = geoLon;
-    }
+	public BigDecimal getGeoLon() {
+		return geoLon;
+	}
+
+	public void setGeoLon(BigDecimal geoLon) {
+		this.geoLon = geoLon;
+	}
+
+	public String getTelephoneNr() {
+		return telephoneNr;
+	}
+
+	public void setTelephoneNr(String telephoneNr) {
+		this.telephoneNr = telephoneNr;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getSrcUrl() {
+		return srcUrl;
+	}
+
+	public void setSrcUrl(String srcUrl) {
+		this.srcUrl = srcUrl;
+	}
+
+	public Set<Hours> getHours() {
+		return hours;
+	}
+
+	public void setHours(Set<Hours> hours) {
+		this.hours = hours;
+	}
+
+
 
 }

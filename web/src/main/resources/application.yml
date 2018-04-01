@@ -10,3 +10,5 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      jdbc:
+        time_zone: MET
