@@ -15,7 +15,11 @@ import at.c02.aai.app.db.entity.Doctor;
 import at.c02.aai.app.db.entity.Facility;
 import at.c02.aai.app.db.entity.FacilityType;
 import at.c02.aai.app.db.entity.Hours;
+import at.c02.aai.app.db.entity.Insurance;
+import at.c02.aai.app.db.entity.Speciality;
 import at.c02.aai.app.db.repository.DoctorRepository;
+import at.c02.aai.app.db.repository.InsuranceRepository;
+import at.c02.aai.app.db.repository.SpecialityRepository;
 import at.c02.aai.app.web.api.in.DoctorDTO;
 
 @Service
@@ -25,14 +29,32 @@ public class DoctorImportService {
 	@Autowired
 	private DoctorRepository doctorRepository;
 
+	@Autowired
+	private InsuranceRepository insuranceRepository;
+
+	@Autowired
+	private SpecialityRepository specialityRepository;
+
 	public List<DoctorDTO> importDoctors(List<DoctorDTO> doctors) {
-		return doctors.stream().map(this::mapFromDTO).map(doctorRepository::save).map(this::mapToDTO)
-				.collect(Collectors.toList());
+		InsuranceCache insuranceCache = new InsuranceCache(insuranceRepository);
+		SpecialityCache specialityCache = new SpecialityCache(specialityRepository);
+		return doctors.stream().map(doctorDto -> mapFromDTO(doctorDto, insuranceCache, specialityCache))
+				.map(doctorRepository::save).map(this::mapToDTO).collect(Collectors.toList());
 	}
 
-	private Doctor mapFromDTO(DoctorDTO doctorDto) {
+	private Doctor mapFromDTO(DoctorDTO doctorDto, InsuranceCache insuranceCache, SpecialityCache specialityCache) {
 		Doctor doctor = new Doctor();
 		doctor.setDoctorId(doctorDto.getId());
+		if (doctorDto.getInsurances() != null) {
+			Set<Insurance> insurances = doctor.getInsurances();
+			doctorDto.getInsurances().stream().map(insuranceCache::findOrCreate).filter(Objects::nonNull)
+					.forEach(insurances::add);
+		}
+		if (doctorDto.getSpecialities() != null) {
+			Set<Speciality> specialities = doctor.getSpecialities();
+			doctorDto.getSpecialities().stream().map(specialityCache::findOrCreate).filter(Objects::nonNull)
+					.forEach(specialities::add);
+		}
 		Facility facility = new Facility();
 		facility.setTitle(StringUtils.trimToNull(doctorDto.getTitle()));
 		facility.setFacilityType(FacilityType.DOCTOR);
