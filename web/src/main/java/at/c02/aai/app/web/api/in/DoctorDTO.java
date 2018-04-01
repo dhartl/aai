@@ -42,6 +42,10 @@ public class DoctorDTO {
 	 */
 	private List<String> specialities;
 	/**
+	 * Insurances of the doctor
+	 */
+	private List<String> insurances;
+	/**
 	 * Open hours
 	 */
 	private List<HoursDTO> hours;
@@ -145,6 +149,14 @@ public class DoctorDTO {
 
 	public void setSpecialities(List<String> specialities) {
 		this.specialities = specialities;
+	}
+
+	public List<String> getInsurances() {
+		return insurances;
+	}
+
+	public void setInsurances(List<String> insurances) {
+		this.insurances = insurances;
 	}
 
 	public List<HoursDTO> getHours() {
