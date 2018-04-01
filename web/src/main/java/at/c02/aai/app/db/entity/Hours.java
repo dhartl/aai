@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "hours")
-public class Hours {
+public class Hours extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "hoursId")
@@ -25,6 +25,11 @@ public class Hours {
 	private LocalTime fromTime;
 	@Column(name = "toTime", nullable = false)
 	private LocalTime toTime;
+
+	@Override
+	public Long getId() {
+		return getHoursId();
+	}
 
 	public Long getHoursId() {
 		return hoursId;

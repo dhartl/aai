@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "facility")
-public class Facility {
+public class Facility extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +60,11 @@ public class Facility {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "facilityId")
 	private Set<Hours> hours = new LinkedHashSet<>(0);
+
+	@Override
+	public Long getId() {
+		return getFacilityId();
+	}
 
 	public Long getFacilityId() {
 		return facilityId;

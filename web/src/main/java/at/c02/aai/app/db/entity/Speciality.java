@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "speciality")
-public class Speciality {
+public class Speciality extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,11 @@ public class Speciality {
 
 	@Column(name = "name", nullable = false, length = 100)
 	private String name;
+
+	@Override
+	public Long getId() {
+		return getSpecialityId();
+	}
 
 	public Long getSpecialityId() {
 		return specialityId;

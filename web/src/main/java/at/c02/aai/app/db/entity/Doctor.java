@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "doctor")
-public class Doctor {
+public class Doctor extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +36,11 @@ public class Doctor {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "doctorInsurance", joinColumns = @JoinColumn(name = "doctorId"), inverseJoinColumns = @JoinColumn(name = "insuranceId"))
 	private Set<Insurance> insurances = new LinkedHashSet<>();
+
+	@Override
+	public Long getId() {
+		return getDoctorId();
+	}
 
 	public Long getDoctorId() {
 		return doctorId;

@@ -14,4 +14,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 	@Query("select doctor from Doctor doctor")
 	List<Doctor> findAllWithFacility();
 
+	@EntityGraph(attributePaths = { "facility", "specialities", "insurances", "facility.hours" })
+	@Query("select doctor from Doctor doctor")
+	List<Doctor> findAllWithDetails();
+
 }
