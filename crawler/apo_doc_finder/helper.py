@@ -48,6 +48,13 @@ class TextHelper():
 class InsuranceHelper():
     def getInsuranceByCode(self, code):
         try:
+            if code == 'SVAWG': # KTN
+                code = 'SVA'
+            if code.startswith('KFA'): # STMK
+                code = 'KFA'
+            if code == 'SV': # STMK
+                code = 'SVB'
+
             insurance = Insurance[code]
             return insurance
         except KeyError:
