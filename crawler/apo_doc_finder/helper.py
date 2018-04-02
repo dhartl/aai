@@ -24,7 +24,7 @@ class Geocoder():
 
         # simple retry mechanism if it fails
         for x in range(0, 3):
-            self.apikey = settings.get('GOOGLE_API_KEY', None)
+            self.apikey = settings.get('GOOGLE_API_KEY1', None)
             url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address
             if self.apikey is not None:
                 url += '&key=' + self.apikey
