@@ -48,7 +48,7 @@ class TextHelper():
 class InsuranceHelper():
     def getInsuranceByCode(self, code):
         try:
-            if code == 'SVAWG': # KTN
+            if code == 'SVAGW': # KTN
                 code = 'SVA'
             if code.startswith('KFA'): # STMK
                 code = 'KFA'
