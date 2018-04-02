@@ -50,7 +50,8 @@ class ApoSpider(scrapy.Spider):
             url = response.xpath('//font[text()="Homepage:"]').xpath('../../td[2]/a').css('a::attr(href)').extract_first(),
             specialities = [], # empty for apo's
             hours = self.getHours(response),
-            srcUrl = response.url
+            srcUrl = response.url,
+            insurances = []
         )
 
         return item

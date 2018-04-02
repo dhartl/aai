@@ -1,5 +1,6 @@
 from scrapy.conf import settings
 import requests
+from apo_doc_finder.items import Insurance 
 
 class Geocoder():
     apikey = None
@@ -36,10 +37,18 @@ class Geocoder():
                 lng = resp_json_payload['results'][0]['geometry']['location']['lng']
                 return lat, lng
 
-        return 0,0
+        return None, None
 
 class TextHelper():
     def removeUnneccessarySpacesAndNewLines(self, rawText):
         splits = rawText.split()
         
         return ' '.join(splits)
+
+class InsuranceHelper():
+    def getInsuranceByCode(self, code):
+        try:
+            insurance = Insurance[code]
+            return insurance
+        except KeyError:
+            return None
