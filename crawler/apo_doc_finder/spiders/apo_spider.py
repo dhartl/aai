@@ -6,6 +6,7 @@ from scrapy.conf import settings
 
 class ApoSpider(scrapy.Spider):
     name = "apo"
+    geocoder = Geocoder()
     
     def start_requests(self):
         url = 'https://www.apotheker.at/internet/oeak/Apotheken.nsf/formWebname?OpenForm'
@@ -34,8 +35,7 @@ class ApoSpider(scrapy.Spider):
         city = addressDetails.xpath('./td[2]/font[4]').css('font::text').extract_first()
         state = response.xpath('//font[text()="Bundesland:"]').xpath('../../td[2]/font').css('font::text').extract_first()
 
-        geocoder = Geocoder()
-        lat, lng = geocoder.getLatLng(street, zipCode, city, state)
+        lat, lng = self.geocoder.getLatLng(street, zipCode, city, state)
 
         item = Details(
             title = details.xpath('./span[1]').css('span::text').extract_first(),
