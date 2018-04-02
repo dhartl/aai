@@ -1,13 +1,16 @@
 import requests
 import scrapy
-from apo_doc_finder.items import Details, Hours, Weekdays
+from apo_doc_finder.items import Details, Hours, Weekdays, Insurance
 from scrapy.conf import settings
-from apo_doc_finder.helper import Geocoder, TextHelper
+from apo_doc_finder.helper import Geocoder, TextHelper, InsuranceHelper
 
 class ApoSpider(scrapy.Spider):
     name = "doc_ktn"
     baseurl = 'http://api.aekktn.at/service/arztsuche/'
     cookies = None
+    textHelper = TextHelper()
+    geocoder = Geocoder()
+    insuranceHelper = InsuranceHelper()
 
     def start_requests(self):
         url = self.baseurl + '?arztsuche=1'
@@ -78,10 +81,8 @@ class ApoSpider(scrapy.Spider):
         return items
 
     def parseDetail(self, response):
-        textHelper = TextHelper()
-
         titleRaw = response.xpath('//h1[1]').css('h1::text').extract_first()
-        title = textHelper.removeUnneccessarySpacesAndNewLines(titleRaw)
+        title = self.textHelper.removeUnneccessarySpacesAndNewLines(titleRaw)
 
         labels = response.xpath('//div[@class="result_label"]')
         specialities = []
@@ -91,6 +92,7 @@ class ApoSpider(scrapy.Spider):
         telNr = None
         website = None
         hours = []
+        insurances = []
 
         for l in labels:
             labelTextRaw = l.css('div::text').extract_first()
@@ -99,13 +101,22 @@ class ApoSpider(scrapy.Spider):
                 contents = l.xpath('../div[@class="result_content"]/div')
                 if labelText == 'Fach:':
                     for c in contents:
-                        specialities.append(textHelper.removeUnneccessarySpacesAndNewLines(c.css('div::text').extract_first()))
+                        specialityRaw = self.textHelper.removeUnneccessarySpacesAndNewLines(c.css('div::text').extract_first())
+                        splits = specialityRaw.split(' - ')
+                        specialities.append(' '.join(splits[:len(splits)-1]))
+                        insurancesRaw = splits[len(splits)-1]
+                        for i in insurancesRaw.split(', '):
+                            insurance = self.insuranceHelper.getInsuranceByCode(i)
+                            if insurance is not None:
+                                if insurance.name not in insurances:
+                                    insurances.append(insurance.name)
+
                 if labelText == 'Adresse:':
                     line2 = contents[1].css('div::text').extract_first()
                     zipCode = line2.split(' ')[0]
                     city = ' '.join(line2.split(' ')[1::])
                     streetRaw = contents[0].css('div::text').extract_first().split(' (')[0]
-                    street = textHelper.removeUnneccessarySpacesAndNewLines(streetRaw)
+                    street = self.textHelper.removeUnneccessarySpacesAndNewLines(streetRaw)
                 if labelText == 'Erreichbarkeiten:':
                     childs = contents.xpath('./div[@class="result_day_field"]')
                     for c in childs:
@@ -121,9 +132,11 @@ class ApoSpider(scrapy.Spider):
                     hours = self.getHours(childs)
 
         state = 'Kärnten'
-        geocoder = Geocoder()
-        lat, lng = geocoder.getLatLng(street, zipCode, city, state)
+        lat, lng = self.geocoder.getLatLng(street, zipCode, city, state)
         
+        if len(insurances) == 0:
+            insurances.append(Insurance['WA'].name)
+
         item = Details(
             title = title,
             street = street,
@@ -137,7 +150,8 @@ class ApoSpider(scrapy.Spider):
             url = website,
             specialities = specialities,
             hours = hours,
-            srcUrl = response.url
+            srcUrl = response.url,
+            insurances = insurances
         )
 
         return item
