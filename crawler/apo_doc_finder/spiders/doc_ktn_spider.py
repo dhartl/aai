@@ -4,7 +4,7 @@ from apo_doc_finder.items import Details, Hours, Weekdays, Insurance
 from scrapy.conf import settings
 from apo_doc_finder.helper import Geocoder, TextHelper, InsuranceHelper
 
-class ApoSpider(scrapy.Spider):
+class DocKtnSpider(scrapy.Spider):
     name = "doc_ktn"
     baseurl = 'http://api.aekktn.at/service/arztsuche/'
     cookies = None

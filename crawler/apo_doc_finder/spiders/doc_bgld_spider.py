@@ -4,7 +4,7 @@ from apo_doc_finder.items import Details, Hours, Weekdays, Insurance
 from scrapy.conf import settings
 from apo_doc_finder.helper import Geocoder, TextHelper, InsuranceHelper
 
-class ApoSpider(scrapy.Spider):
+class DocBgldSpider(scrapy.Spider):
     name = "doc_bgld"
     baseurl = 'http://www.aekbgld.at/arztsuche/-/arztsuchebgd/arzt/'
     textHelper = TextHelper()
