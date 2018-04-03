@@ -183,7 +183,7 @@ class DocNoeSpider(scrapy.Spider):
                     city = ' '.join(firstLine.split()[1:])
                     street = addressDivs[1].css('div::text').extract_first()
 
-                lat, lng = None, None#self.geocoder.getLatLng(street, zipCode, city, state)
+                lat, lng = self.geocoder.getLatLng(street, zipCode, city, state)
 
                 item = Details(
                     title = title,
