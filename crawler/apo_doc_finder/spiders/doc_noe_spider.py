@@ -115,8 +115,9 @@ class DocNoeSpider(scrapy.Spider):
                         generaltTelNr, generalEmail, generalWebsite = self.getContactInformation(contact)
                     if 'Berufsbezeichnung' in colHeader:
                         specialitiesList = fields[x + 1].xpath('./li')
-                        for li in specialitiesList:
-                            generalSpecialities.append(li.css('li::text').extract_first())
+                        if specialitiesList:
+                            for li in specialitiesList:
+                                generalSpecialities.append(li.css('li::text').extract_first())
 
             services = details.xpath('./div[@class="serviceDomain container"]')
 
