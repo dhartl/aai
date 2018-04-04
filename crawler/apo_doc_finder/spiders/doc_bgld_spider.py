@@ -1,14 +1,15 @@
 import requests
 import scrapy
-from apo_doc_finder.items import Details, Hours, Weekdays
+from apo_doc_finder.items import Details, Hours, Weekdays, Insurance
 from scrapy.conf import settings
-from apo_doc_finder.helper import Geocoder, TextHelper
+from apo_doc_finder.helper import Geocoder, TextHelper, InsuranceHelper
 
-class ApoSpider(scrapy.Spider):
+class DocBgldSpider(scrapy.Spider):
     name = "doc_bgld"
     baseurl = 'http://www.aekbgld.at/arztsuche/-/arztsuchebgd/arzt/'
     textHelper = TextHelper()
     geocoder = Geocoder()
+    insuranceHelper = InsuranceHelper()
 
     def start_requests(self):
         url = self.baseurl
@@ -56,6 +57,17 @@ class ApoSpider(scrapy.Spider):
             hoursTable = detailTable.xpath('./table[@class="consHoursTable"]/tbody/tr')
             hours = self.getHours(hoursTable)
 
+            insurances = []
+            fundsTable = detailTable.xpath('./table[@class="fundsTable"]/tbody/tr')
+            for tr in fundsTable:
+                insuranceRaw = tr.xpath('./td').css('td::text').extract_first()
+                insurance = self.insuranceHelper.getInsuranceByCode(insuranceRaw)
+                if insurance is not None:
+                    insurances.append(insurance.name)
+
+            if len(insurances) == 0:
+                insurances.append(Insurance['WA'].name)
+
             yield Details(
                 title = title,
                 street = street,
@@ -69,7 +81,8 @@ class ApoSpider(scrapy.Spider):
                 url = website,
                 specialities = specialities,
                 hours = hours,
-                srcUrl = response.url
+                srcUrl = response.url,
+                insurances = insurances
             )
     
     def getHours(self, trs):

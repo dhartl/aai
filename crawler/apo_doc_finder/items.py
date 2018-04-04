@@ -22,6 +22,7 @@ class Details(Item):
     specialities = Field()
     hours = Field()
     srcUrl = Field()
+    insurances = Field()
 
 class Hours(Item):
     weekday = Field() # Day of the week; MON, TUE, WED, THU, FRI, SAT, SUN
@@ -36,3 +37,13 @@ class Weekdays(Enum):
     FRI = 'Freitag'
     SAT = 'Samstag'
     SUN = 'Sonntag'
+
+class Insurance(Enum):
+    GKK = 'Gebietskrankenkasse'
+    VAEB = 'Versicherungsanstalt für Eisenbahnen und Bergbau'
+    BVA = 'Versicherungsanstalt öffentlich Bediensteter'
+    SVA = 'Sozialversicherungsanstalt der gewerblichen Wirtschaft'
+    SVB = 'Sozialversicherungsanstalt der Bauern'
+    KFA = 'Krankenfürsorgeanstalt'
+    ÖDA = 'österreichisch-deutsches Abkommen'
+    WA = 'Wahlarzt'
