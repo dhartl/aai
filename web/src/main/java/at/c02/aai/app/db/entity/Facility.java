@@ -53,9 +53,9 @@ public class Facility extends BaseEntity {
     private String telephoneNr;
     @Column(name = "email", length = 255)
     private String email;
-    @Column(name = "url", length = 255)
+    @Column(name = "url", length = 1024)
     private String url;
-    @Column(name = "srcUrl", length = 255)
+    @Column(name = "srcUrl", length = 1024)
     private String srcUrl;
     @Column(name = "hoursTotal")
     private Double hoursTotal;
