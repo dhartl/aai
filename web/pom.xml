@@ -76,7 +76,7 @@
 		<dependency>
 			<groupId>org.vaadin.addon</groupId>
 			<artifactId>v-leaflet</artifactId>
-			<version>2.0.5</version>
+			<version>2.0.6</version>
 		</dependency>
 		<dependency>
 		   <groupId>org.vaadin.addon</groupId>
@@ -98,6 +98,11 @@
 		   <groupId>org.vaadin.addons</groupId>
 		   <artifactId>v-leaflet-markercluster</artifactId>
 		   <version>1.1.0</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.vaadin.addons</groupId>
+			<artifactId>vaadin-combobox-multiselect</artifactId>
+			<version>2.6</version>
 		</dependency>
 	</dependencies>
 
