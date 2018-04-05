@@ -73,6 +73,7 @@ public class DoctorImportService {
 			hour.setFacility(facility);
 			return hour;
 		}).forEach(hours::add);
+	facility.setHoursTotal(FacilityUtils.calculateHoursTotal(hours));
 		doctor.setFacility(facility);
 		return doctor;
 	}

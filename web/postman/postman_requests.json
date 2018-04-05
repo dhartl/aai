@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c21ac949-71a4-4917-a239-52affe53f050",
+		"_postman_id": "b0f8ff23-385b-4d8e-9f24-73408841f71e",
 		"name": "AAI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -63,6 +63,36 @@
 							"path": [
 								"aai",
 								"pharmacy",
+								"import"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import insurances",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/insurance/import",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"insurance",
 								"import"
 							]
 						}
