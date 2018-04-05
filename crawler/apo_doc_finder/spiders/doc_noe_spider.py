@@ -106,17 +106,21 @@ class DocNoeSpider(scrapy.Spider):
             generaltTelNr = None
             generalWebsite = None
             generalSpecialities = []
-            for x in range(0, len(fields)):
+            cntFields = len(fields)
+            for x in range(0, cntFields):
                 f = fields[x]
                 colHeader = f.css('div::text').extract_first()
                 if colHeader:
                     if 'Kontakt' in colHeader:
-                        contact = fields[x + 1].xpath('./div/div')
-                        generaltTelNr, generalEmail, generalWebsite = self.getContactInformation(contact)
+                        if (x + 1) <= (cntFields - 1):
+                            contact = fields[x + 1].xpath('./div/div')
+                            generaltTelNr, generalEmail, generalWebsite = self.getContactInformation(contact)
                     if 'Berufsbezeichnung' in colHeader:
-                        specialitiesList = fields[x + 1].xpath('./li')
-                        for li in specialitiesList:
-                            generalSpecialities.append(li.css('li::text').extract_first())
+                        if (x + 1) <= (cntFields - 1):
+                            specialitiesList = fields[x + 1].xpath('./li')
+                            if specialitiesList:
+                                for li in specialitiesList:
+                                    generalSpecialities.append(li.css('li::text').extract_first())
 
             services = details.xpath('./div[@class="serviceDomain container"]')
 
