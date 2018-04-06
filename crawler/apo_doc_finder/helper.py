@@ -49,6 +49,14 @@ class TextHelper():
         
         return ' '.join(splits)
 
+    def getNrFromString(self, text):
+        nr = None
+        try:
+            nr = int(text)
+        except ValueError:
+            pass
+        return nr
+
 class InsuranceHelper():
     def getInsuranceByCode(self, code):
         try:
@@ -58,6 +66,8 @@ class InsuranceHelper():
                 code = 'KFA'
             if code == 'SV': # STMK
                 code = 'SVB'
+            if code == 'VA': # WIEN
+                code = 'VAEB'
 
             insurance = Insurance[code]
             return insurance
