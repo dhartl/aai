@@ -10,5 +10,6 @@ Just configure the correct one in the "runner.py" script
 
 ATTENTION:
 "doc_wien" is only per gender -> you need to run it two times:
+"doc_wien" needs also CONCURRENT_REQUESTS set to 1 in settings.py -> sites does not respond correctly if too many requests per second!!!
 scrapy crawl doc_wien -a sex=M -o docs_wien_male.json -t json
 scrapy crawl doc_wien -a sex=W -o docs_wien_female.json -t json
