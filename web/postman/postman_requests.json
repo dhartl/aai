@@ -98,6 +98,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Import specialities",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/speciality/import",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"speciality",
+								"import"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
