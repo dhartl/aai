@@ -54,7 +54,7 @@ public class DoctorImportService {
 	    Set<Speciality> specialities = doctor.getSpecialities();
 	    doctorDto.getSpecialities().stream()
 		    .flatMap(speciality -> specialityCache.prepareSpeciality(speciality).stream())
-		    .map(specialityCache::findOrCreate).filter(Objects::nonNull).forEach(specialities::add);
+		    .map(specialityCache::findSpeciality).filter(Objects::nonNull).forEach(specialities::add);
 	}
 	Facility facility = new Facility();
 	facility.setTitle(StringUtils.trimToNull(doctorDto.getTitle()));
@@ -98,6 +98,9 @@ public class DoctorImportService {
 	doctorDto.setUrl(facility.getUrl());
 	doctorDto.setSrcUrl(facility.getSrcUrl());
 	doctorDto.setHours(facility.getHours().stream().map(FacilityUtils::mapToHoursDto).collect(Collectors.toList()));
+	doctorDto.setSpecialities(
+		doctor.getSpecialities().stream().map(Speciality::getName).collect(Collectors.toList()));
+	doctorDto.setInsurances(doctor.getInsurances().stream().map(Insurance::getCode).collect(Collectors.toList()));
 	return doctorDto;
     }
 }
