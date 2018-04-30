@@ -26,10 +26,14 @@ class Geocoder():
         # simple retry mechanism if it fails
         for x in range(0, 3):
             self.currentApiKeyNr += 1
-            if self.currentApiKeyNr == 5:
-                self.currentApiKeyNr = 1
             self.apikey = settings.get('GOOGLE_API_KEY' + str(self.currentApiKeyNr), None)
+
+            if self.apikey is None:
+                self.currentApiKeyNr = 1
+                self.apikey = settings.get('GOOGLE_API_KEY' + str(self.currentApiKeyNr), None)
+
             url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address
+            
             if self.apikey is not None:
                 url += '&key=' + self.apikey
             
