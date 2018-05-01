@@ -4,7 +4,6 @@ from apo_doc_finder.items import Details, Hours, Weekdays, Insurance
 from scrapy.conf import settings
 from apo_doc_finder.helper import Geocoder, TextHelper, InsuranceHelper
 
-# CONCURRENT_REQUESTS must be set to 1!!!
 class DocWienSpider(scrapy.Spider):
     name = "doc_wien"
     textHelper = TextHelper()
