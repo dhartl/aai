@@ -8,12 +8,14 @@ The information is crawled from following sites:
 	* [Burgendland](http://www.aekbgld.at/web/arztekammer-fur-burgenland/arztsuche)
 	* [Kärnten](http://www.aekktn.at/web/arztekammer-fur-karnten/arztsuche)
 	* [Niederösterreich](https://sso.arztnoe.at/arztsuche/search.jsf)
-	* [Oberösterreich](http://arztsuche.aekooe.at/)
-	* [Salzburg](http://www.aeksbg.at/web/arztekammer-fur-salzburg/arztsuche)
+	* [Oberösterreich](http://arztsuche.aekooe.at/)(*)
+	* [Salzburg](http://www.aeksbg.at/web/arztekammer-fur-salzburg/arztsuche)(*)
 	* [Steiermark](https://www.aekstmk.or.at/46)
-	* [Tirol](http://www.aektirol.at/arztsuche)
-	* [Vorarlberg](https://www.medicus-online.at//aek/dist/medicus.html)
+	* [Tirol](http://www.aektirol.at/arztsuche)(*)
+	* [Vorarlberg](https://www.medicus-online.at//aek/dist/medicus.html)(*)
 	* [Wien](http://www.praxisplan.at/)
+
+(all with (*) marked states have no crawler implemented yet)
 
 ## Getting Started
 
