@@ -20,6 +20,9 @@ class Geocoder():
                 address += ','
             address += city
 
+        if address == "":
+            return None, None
+
         if state is not None:
             address += ',' + state
 
