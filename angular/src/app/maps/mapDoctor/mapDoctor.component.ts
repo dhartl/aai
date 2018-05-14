@@ -9,7 +9,7 @@ declare var HeatmapOverlay;
 @Component({
   selector: 'mapDoctor',
   templateUrl: 'mapDoctor.component.html',
-  styleUrls: ['mapDoctor.component.css']
+  styleUrls: ['./mapDoctor.component.css']
 })
 export class MapDoctorComponent {
 
@@ -38,7 +38,7 @@ export class MapDoctorComponent {
     maxOpacity: 0.8,
     latField: 'lat',
     lngField: 'lng',
-    valueField: 'zipCode'
+    valueField: 'count'
     
   })
 
@@ -55,6 +55,7 @@ export class MapDoctorComponent {
     center: L.latLng([47.076668, 15.421371 ])
   };
   onMapReady(map: L.Map) {
+  
     map.on('mousemove', (event: L.LeafletMouseEvent) => {
       this.data.data.push({
         lat: event.latlng.lat,

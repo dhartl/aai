@@ -57,3 +57,6 @@ nav a.active {
   left: 0;
   right: 0;
 }
+.router-outlet{
+  top:0%;
+}
