@@ -12,8 +12,8 @@ import org.locationtech.spatial4j.shape.impl.PointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import at.c02.aai.app.db.entity.Facility;
 import at.c02.aai.app.service.bean.DistanceBean;
+import at.c02.aai.app.service.bean.HasGeoCoordinates;
 
 @Service
 public class DistanceService {
@@ -21,19 +21,19 @@ public class DistanceService {
 	@Autowired
 	private SpatialContext spatialContext;
 
-	public List<DistanceBean> createDistances(List<Facility> facilitiesFrom, List<Facility> facilitiesTo,
-			int maxDistanceInMeter) {
+	public List<DistanceBean> createDistances(List<? extends HasGeoCoordinates> facilitiesFrom,
+			List<? extends HasGeoCoordinates> facilitiesTo, int maxDistanceInMeter) {
 
 		List<DistanceBean> distances = new ArrayList<>();
 
-		for (Facility from : facilitiesFrom) {
-			if (!FacilityUtils.hasCoordinates(from)) {
+		for (HasGeoCoordinates from : facilitiesFrom) {
+			if (!HasGeoCoordinateUtils.hasCoordinates(from)) {
 				continue;
 			}
 			Point fromPoint = getPointFromGeoCoordinate(from.getGeoLat(), from.getGeoLon());
 			DistanceBean distanceBean = new DistanceBean(from.getGeoLat(), from.getGeoLon(), 0);
-			for (Facility to : facilitiesTo) {
-				if (!Objects.equals(from, to) && FacilityUtils.hasCoordinates(to)) {
+			for (HasGeoCoordinates to : facilitiesTo) {
+				if (!Objects.equals(from, to) && HasGeoCoordinateUtils.hasCoordinates(to)) {
 					Point toPoint = getPointFromGeoCoordinate(to.getGeoLat(), to.getGeoLon());
 					double distance = calculateDistanceBetweenPoints(fromPoint, toPoint);
 					if (distance <= maxDistanceInMeter) {

@@ -13,4 +13,9 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Long> {
 	@EntityGraph(attributePaths = { "facility", "facility.hours" })
 	@Query("select pharmacy from Pharmacy pharmacy")
 	List<Pharmacy> findAllWithDetails();
+
+	@EntityGraph(attributePaths = { "facility" })
+	@Query("select pharmacy from Pharmacy pharmacy join pharmacy.facility facility "
+			+ "where facility.geoLat is not null and facility.geoLon is not null")
+	List<Pharmacy> findWithGeoCoordinates();
 }

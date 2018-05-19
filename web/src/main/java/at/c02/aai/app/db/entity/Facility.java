@@ -17,9 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import at.c02.aai.app.service.bean.HasGeoCoordinates;
+
 @Entity
 @Table(name = "facility")
-public class Facility extends BaseEntity {
+public class Facility extends BaseEntity implements HasGeoCoordinates {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -124,6 +126,7 @@ public class Facility extends BaseEntity {
 	this.state = state;
     }
 
+    @Override
     public BigDecimal getGeoLat() {
 	return geoLat;
     }
@@ -132,6 +135,7 @@ public class Facility extends BaseEntity {
 	this.geoLat = geoLat;
     }
 
+    @Override
     public BigDecimal getGeoLon() {
 	return geoLon;
     }

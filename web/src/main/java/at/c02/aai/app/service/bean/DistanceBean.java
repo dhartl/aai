@@ -2,7 +2,7 @@ package at.c02.aai.app.service.bean;
 
 import java.math.BigDecimal;
 
-public class DistanceBean {
+public class DistanceBean implements HasGeoCoordinates {
 	private BigDecimal geoLat;
 	private BigDecimal geoLon;
 	private long count;
@@ -14,6 +14,7 @@ public class DistanceBean {
 		this.count = count;
 	}
 
+	@Override
 	public BigDecimal getGeoLat() {
 		return geoLat;
 	}
@@ -22,6 +23,7 @@ public class DistanceBean {
 		this.geoLat = geoLat;
 	}
 
+	@Override
 	public BigDecimal getGeoLon() {
 		return geoLon;
 	}
