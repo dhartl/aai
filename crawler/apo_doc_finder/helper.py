@@ -20,16 +20,23 @@ class Geocoder():
                 address += ','
             address += city
 
+        if address == "":
+            return None, None
+
         if state is not None:
             address += ',' + state
 
         # simple retry mechanism if it fails
         for x in range(0, 3):
             self.currentApiKeyNr += 1
-            if self.currentApiKeyNr == 5:
-                self.currentApiKeyNr = 1
             self.apikey = settings.get('GOOGLE_API_KEY' + str(self.currentApiKeyNr), None)
+
+            if self.apikey is None:
+                self.currentApiKeyNr = 1
+                self.apikey = settings.get('GOOGLE_API_KEY' + str(self.currentApiKeyNr), None)
+
             url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address
+            
             if self.apikey is not None:
                 url += '&key=' + self.apikey
             
@@ -49,6 +56,14 @@ class TextHelper():
         
         return ' '.join(splits)
 
+    def getNrFromString(self, text):
+        nr = None
+        try:
+            nr = int(text)
+        except ValueError:
+            pass
+        return nr
+
 class InsuranceHelper():
     def getInsuranceByCode(self, code):
         try:
@@ -58,6 +73,8 @@ class InsuranceHelper():
                 code = 'KFA'
             if code == 'SV': # STMK
                 code = 'SVB'
+            if code == 'VA': # WIEN
+                code = 'VAEB'
 
             insurance = Insurance[code]
             return insurance
