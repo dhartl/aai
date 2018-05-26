@@ -1,0 +1,28 @@
+<div>
+  <h2 mat-dialog-title>Map Setting</h2>
+  <hr>
+  <mat-dialog-content>
+    Please set up your dynamic Pharmacy Location Analyzer Heatmap!
+    <br>
+    <br>
+    <p>Choose the insurances of the doctors:</p>
+    <div *ngFor="let insurance of insurances">
+      <input type="checkbox" [(ngModel)]="insurance.isChecked" [ngModelOptions]="{standalone: true}"> 
+         {{insurance.name}}
+    </div>
+
+    <br>
+    <p>Choose the specialities of the doctors:</p>
+    <br>
+    <div *ngFor="let speciality of specialities">
+      <input type="checkbox" [(ngModel)]="speciality.isChecked" [ngModelOptions]="{standalone: true}"> 
+         {{speciality.name}}
+    </div>
+    
+  </mat-dialog-content>
+  <hr>
+  <mat-dialog-actions>
+    <button mat-raised-button (click)="onCloseConfirm()">CONFIRM</button>&nbsp;
+    <button mat-raised-button (click)="onCloseCancel()">CANCEL</button>
+  </mat-dialog-actions>
+</div>
