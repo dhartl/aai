@@ -6,6 +6,8 @@
     <br>
     <br>
     <p>Choose the insurances of the doctors:</p>
+    <button mat-raised-button (click)="onDeSelectAllInsurances()"> (De-)Select all</button>
+
     <div *ngFor="let insurance of insurances">
       <input type="checkbox" [(ngModel)]="insurance.isChecked" [ngModelOptions]="{standalone: true}"> 
          {{insurance.name}}
@@ -13,12 +15,12 @@
 
     <br>
     <p>Choose the specialities of the doctors:</p>
-    <br>
+    <button mat-raised-button (click)="onDeSelectAllSpecialities()"> (De-)Select all</button>    
+
     <div *ngFor="let speciality of specialities">
       <input type="checkbox" [(ngModel)]="speciality.isChecked" [ngModelOptions]="{standalone: true}"> 
          {{speciality.name}}
     </div>
-    
   </mat-dialog-content>
   <hr>
   <mat-dialog-actions>

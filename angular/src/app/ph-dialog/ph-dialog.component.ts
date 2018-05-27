@@ -38,6 +38,7 @@ export class PhDialogComponent implements OnInit {
     }
   }
 
+  deselectionInsurances:boolean = true;
 
   insurances = [{id:1, name:"halllo" ,isChecked: false},
                 {id:2, name:"hallo2" ,isChecked: true}]
@@ -67,4 +68,46 @@ export class PhDialogComponent implements OnInit {
     this.thisDialogRef.close(this.doctorRequest);
   }
 
-}
+  onDeSelectAllInsurances()
+  { 
+    for(var ins of this.insurances)
+    {
+      if(this.deselectionInsurances)
+    {
+      ins.isChecked = false;
+     
+    }
+    else{
+      ins.isChecked = true;
+    }
+  }
+  if(this.deselectionInsurances)
+  {
+    this.deselectionInsurances = false;
+  }
+
+    else{this.deselectionInsurances = true;}
+  }
+
+  deselectionSpecialites : boolean = true;
+
+  onDeSelectAllSpecialities()
+  { 
+    for(var specs of this.specialities)
+    {
+      if(this.deselectionSpecialites)
+    {
+      specs.isChecked = false;
+      
+    }
+    else{
+      specs.isChecked = true;
+    }
+  }
+  if (this.deselectionSpecialites)
+  {
+    this.deselectionSpecialites = false;
+  }
+  else{
+    this.deselectionSpecialites = true;
+  }}}

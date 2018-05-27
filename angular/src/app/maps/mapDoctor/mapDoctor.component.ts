@@ -48,6 +48,7 @@ export class MapDoctorComponent implements OnInit, OnChanges {
 
   changeData()
   {
+    this.heatmapRequest.doctorRequest = this.doctorRequest;
     this.getDataFromBackend(this.doctorRequest,this.heatmapRequest); 
     this.heatmapLayer.setData(this.heatmapData);
   }
@@ -116,15 +117,15 @@ export class MapDoctorComponent implements OnInit, OnChanges {
     })
  
   heatmapLayer = new HeatmapOverlay({
-    radius: 20,
-    blur: 4,
+    radius: 12,
+    blur: 0.75,
     gradient: {
      0: 'blue',
      .5: 'lime',
       1: 'red'
     },
     minOpacity: 0.1,
-    maxOpacity: 300,
+    maxOpacity: 0.8,
     latField: 'geoLat',
     lngField: 'geoLon',
     valueField: 'intensity',
@@ -180,28 +181,20 @@ getMarkerData() {
     
    map.once('mousemove', (event: L.LeafletMouseEvent) =>{
     //this.getMarkerData();
-    for(var doc of this.doctors.data)
-    {
-     L.marker([doc.geoLat,doc.geoLon], {icon:this.doctorIcon}).addTo(map);
-    }
+    // for(var doc of this.doctors.data)
+    // {
+    //  L.marker([doc.geoLat,doc.geoLon], {icon:this.doctorIcon}).addTo(map);
+    // }
   
-    for(var pha of this.pharmacies.data)
-    {
-     L.marker([pha.geoLat,pha.geoLon], {icon:this.pharmacyIcon}).addTo(map);
-    }
+    // for(var pha of this.pharmacies.data)
+    // {
+    //  L.marker([pha.geoLat,pha.geoLon], {icon:this.pharmacyIcon}).addTo(map);
+    // }
    });
   //this.getMarkerData();
 
   //  //L.markerClusterGroup.bind(this.markerClusterData);
-  for(var doc of this.doctors.data)
-  {
-   L.marker([doc.geoLat,doc.geoLon], {icon:this.doctorIcon}).addTo(map);
-  }
-
-  for(var pha of this.pharmacies.data)
-  {
-   L.marker([pha.geoLat,pha.geoLon], {icon:this.pharmacyIcon}).addTo(map);
-  }
+  
    
     map.on('mousemove', (event: L.LeafletMouseEvent) => {
       // this.heatmapData.data.push({
