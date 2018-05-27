@@ -2,11 +2,14 @@
   <h2 mat-dialog-title>Map Setting</h2>
   <hr>
   <mat-dialog-content>
-    Please set up your dynamic Pharmacy Location Analyzer Heatmap!
+
+    <p>Choose the distance for the calculation of the heatmap values: (in k meter)</p>
+    <mat-slider thumbLabel [(ngModel)]="heatmapRequest.maxDistanceInMeter"
+    [displayWith]="formatLabel"
+     style="min-width: 350px;" thumbLabel tickInterval="1000" min="1000" max="50000" step="1000" value="3000"></mat-slider>
     <br>
-    <br>
-    <p>Choose the insurances of the doctors:</p>
-    <button mat-raised-button (click)="onDeSelectAllInsurances()"> (De-)Select all</button>
+    <p>Choose the insurances of the doctors:  <button mat-raised-button (click)="onDeSelectAllInsurances()"> (De-)Select all</button>
+    </p>
 
     <div *ngFor="let insurance of insurances">
       <input type="checkbox" [(ngModel)]="insurance.isChecked" [ngModelOptions]="{standalone: true}"> 
@@ -14,8 +17,8 @@
     </div>
 
     <br>
-    <p>Choose the specialities of the doctors:</p>
-    <button mat-raised-button (click)="onDeSelectAllSpecialities()"> (De-)Select all</button>    
+    <p>Choose the specialities of the doctors:     <button mat-raised-button (click)="onDeSelectAllSpecialities()"> (De-)Select all</button>    
+    </p>
 
     <div *ngFor="let speciality of specialities">
       <input type="checkbox" [(ngModel)]="speciality.isChecked" [ngModelOptions]="{standalone: true}"> 

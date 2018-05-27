@@ -25,7 +25,7 @@ declare var markers;
 })
 export class MapDoctorComponent implements OnInit, OnChanges {
 
-  @Output() changed = new EventEmitter<DoctorRequest>();
+  @Output() changed = new EventEmitter<HeatmapRequest>();
 
   ngOnInit(): void {
     this.doctorRequest = {
@@ -39,27 +39,24 @@ export class MapDoctorComponent implements OnInit, OnChanges {
     this.getDataFromBackend(this.doctorRequest,this.heatmapRequest);
     this.heatmapLayer.setData(this.heatmapData);
   }
-  @Input()doctorRequest:DoctorRequest;
+
+  @Input()heatmapRequest:HeatmapRequest;
 
   ngOnChanges(changes: {[propKey: string]:SimpleChange}){
-    this.getDataFromBackend(this.doctorRequest,this.heatmapRequest); 
+    this.getDataFromBackend(this.heatmapRequest.doctorRequest,this.heatmapRequest); 
     this.heatmapLayer.setData(this.heatmapData);
   }
 
   changeData()
   {
-    this.heatmapRequest.doctorRequest = this.doctorRequest;
+    this.doctorRequest = this.heatmapRequest.doctorRequest;
     this.getDataFromBackend(this.doctorRequest,this.heatmapRequest); 
     this.heatmapLayer.setData(this.heatmapData);
   }
 
   constructor(private _DoctorSearch: FacilitySearchService){
-    
-  
-
-    this.getMarkerData();
-   
-  };
+        this.getMarkerData();
+     };
 
   getDataFromBackend(dr:DoctorRequest, hr:HeatmapRequest){
     this._DoctorSearch.postHeatmap(this.heatmapRequest).subscribe((data) => {
@@ -93,9 +90,9 @@ export class MapDoctorComponent implements OnInit, OnChanges {
   //   specialityIds: []
 
   // };
-  heatmapRequest = <HeatmapRequest>{
-    doctorRequest:this.doctorRequest,
-    maxDistanceInMeter:2000
+  doctorRequest = <DoctorRequest>{
+    insuranceIds: [],
+    specialityIds: []
   };
 
   pharmacyIcon = L.icon({
@@ -190,6 +187,7 @@ getMarkerData() {
     // {
     //  L.marker([pha.geoLat,pha.geoLon], {icon:this.pharmacyIcon}).addTo(map);
     // }
+    this.heatmapLayer.setData(this.heatmapData);
    });
   //this.getMarkerData();
 

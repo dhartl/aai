@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject  } from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import {MatDialogRef} from '@angular/material';
+import {MatDialogRef, MatSliderModule} from '@angular/material';
 import { FacilitySearchService } from '../services/facilitysearch.service';
 import { DoctorRequest } from '../entities/doctorRequest';
+import { HeatmapRequest } from '../entities/heatmapRequest';
 
 
 @Component({
@@ -17,6 +18,22 @@ export class PhDialogComponent implements OnInit {
   doctorRequest : DoctorRequest={
    insuranceIds: [],
    specialityIds: []
+  }
+  heatmapRequest : HeatmapRequest={
+    doctorRequest : this.doctorRequest,
+    maxDistanceInMeter: 2000
+  }
+
+  formatLabel(value: number | null) {
+    if (!value) {
+      return 0;
+    }
+
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
+
+    return value;
   }
 
   writeData(){
@@ -36,6 +53,8 @@ export class PhDialogComponent implements OnInit {
         this.doctorRequest.specialityIds.push(spec.id);
       }
     }
+
+    this.heatmapRequest.doctorRequest = this.doctorRequest;
   }
 
   deselectionInsurances:boolean = true;
@@ -60,12 +79,12 @@ export class PhDialogComponent implements OnInit {
 
   onCloseConfirm() {
     this.writeData();
-    this.thisDialogRef.close(this.doctorRequest);
+    this.thisDialogRef.close(this.heatmapRequest);
     
   }
 
   onCloseCancel() {
-    this.thisDialogRef.close(this.doctorRequest);
+    this.thisDialogRef.close(this.heatmapRequest);
   }
 
   onDeSelectAllInsurances()

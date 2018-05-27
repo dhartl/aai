@@ -11,7 +11,7 @@ import { FacilitySearchService } from './services/facilitysearch.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MatDialogModule} from '@angular/material';
+import {MatDialogModule, MatSliderModule, MatCheckboxModule} from '@angular/material';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 import { DialogPharmacyComponent } from './dialog-pharmacy/dialog-pharmacy.component';
 import {MatCardModule} from '@angular/material';
@@ -33,6 +33,8 @@ import { PhDialogComponent } from './ph-dialog/ph-dialog.component';
     MatListModule ,
     MatCardModule,
     MatDialogModule,
+    MatSliderModule,
+    MatCheckboxModule
   ],
   entryComponents: [PhDialogComponent],
   declarations: [

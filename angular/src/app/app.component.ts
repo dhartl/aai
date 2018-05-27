@@ -29,17 +29,19 @@ export class AppComponent  {
   // ngAfterViewInit(): void {
   //   this.doctorRequest = this.child.dialogRequest as DoctorRequest;
   // }
+  heatmapRequest: HeatmapRequest ={
+    doctorRequest: {
+      insuranceIds:[9],
+      specialityIds:[]
+    },
+    maxDistanceInMeter :2000
+    }
   
-  doctorRequest : DoctorRequest = {
-    insuranceIds: [9],
-    specialityIds: []
 
-  };
-
-  changeMapSettings(dr: DoctorRequest)
+  changeMapSettings(hr :HeatmapRequest)
   {
-    this.doctorRequest = dr;
-    this.child.doctorRequest = dr;
+    this.heatmapRequest = hr;
+    this.child.heatmapRequest = hr;
     this.child.changeData();
   }
   
