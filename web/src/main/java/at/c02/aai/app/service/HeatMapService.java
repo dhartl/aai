@@ -35,7 +35,7 @@ public class HeatMapService {
 
 		List<DistanceBean> distances = distanceService.createDistances(pharmacies, doctors,
 				request.getMaxDistanceInMeter());
-		double maxCount = distances.stream().mapToLong(DistanceBean::getCount).max().orElse(0);
+		double maxCount = Math.max(distances.stream().mapToLong(DistanceBean::getCount).max().orElse(0), 1);
 		logger.info("normalizing distances to max {}", maxCount);
 
 		return distances.stream().map(distance -> mapToDto(distance, maxCount)).collect(Collectors.toList());
