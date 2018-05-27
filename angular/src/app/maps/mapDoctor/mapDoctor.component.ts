@@ -1,5 +1,5 @@
 import { Component, Input,  OnChanges, SimpleChange, OnInit, Output, EventEmitter } from '@angular/core';
-import { latLng, tileLayer, icon, map, marker, markerClusterGroup, MarkerCluster, MarkerClusterGroupOptions, MarkerOptions } from 'leaflet';
+import { latLng, tileLayer, icon, map } from 'leaflet';
 import { Facility } from '../../entities/facility';
 import { FacilitySearchService } from '../../services/facilitysearch.service';
 import { HeatmapRequest } from '../../entities/heatmapRequest';
@@ -7,8 +7,9 @@ import { DoctorRequest } from '../../entities/doctorRequest';
 import { Doctor } from '../../entities/doctor';
 import { Pharmacy } from '../../entities/pharmacy';
 import { HeatmapPoint } from '../../entities/heatmapPoint';
-import 'leaflet.markercluster';
+import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 import * as L from 'leaflet';
+import 'leaflet.markercluster';
 
 
 declare var HeatmapOverlay;
@@ -16,6 +17,7 @@ var data : HeatmapPoint[] = [{ geoLat:23.2,geoLon:23.434, intensity:3}];
 var heatmapData;
 var heatmapLayer;
 declare var markers;
+
 
 
 @Component({
@@ -38,6 +40,7 @@ export class MapDoctorComponent implements OnInit, OnChanges {
     }
     this.getDataFromBackend(this.doctorRequest,this.heatmapRequest);
     this.heatmapLayer.setData(this.heatmapData);
+
   }
 
   @Input()heatmapRequest:HeatmapRequest;
@@ -52,10 +55,11 @@ export class MapDoctorComponent implements OnInit, OnChanges {
     this.doctorRequest = this.heatmapRequest.doctorRequest;
     this.getDataFromBackend(this.doctorRequest,this.heatmapRequest); 
     this.heatmapLayer.setData(this.heatmapData);
+    this.setMarkerData();
+
   }
 
   constructor(private _DoctorSearch: FacilitySearchService){
-        this.getMarkerData();
      };
 
   getDataFromBackend(dr:DoctorRequest, hr:HeatmapRequest){
@@ -75,21 +79,14 @@ export class MapDoctorComponent implements OnInit, OnChanges {
   
    heatmapData = {
      data: [<HeatmapPoint>{ geoLat:23.2,geoLon:23.434, intensity:3}]
-   }
+   };
   pharmacies = {
     data: [<Pharmacy>{geoLat:47.076668, geoLon:15.821371,id:2,name:"Campus02"}]
-  }
+  };
   doctors = {
     data: [<Doctor>{geoLat:47.076668, geoLon:15.421371, id:3, name:"Doctor Karate"}]
-  }
-  //47.076668, 15.421371
-
-
-  // doctorRequest = <DoctorRequest>{
-  //   insuranceIds: [],
-  //   specialityIds: []
-
-  // };
+  };
+  
   doctorRequest = <DoctorRequest>{
     insuranceIds: [],
     specialityIds: []
@@ -99,20 +96,16 @@ export class MapDoctorComponent implements OnInit, OnChanges {
     iconSize: [40,45],
     iconAnchor:[13,41],
     iconUrl: 'assets/pharmacy.png'
-    //shadowUrl: 'leaf-shadow.png',
-    // iconSize:     [38, 95], // size of the icon
-    // shadowSize:   [50, 64], // size of the shadow
-    // iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    // shadowAnchor: [4, 62],  // the same for the shadow
-    // popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
     doctorIcon = L.icon({ 
       iconSize: [40,45],
       iconAnchor:[13,41],
       iconUrl: 'assets/medicine.png'
-    })
+    });
  
+    layerdoctors:L.Layer;
+
   heatmapLayer = new HeatmapOverlay({
     radius: 12,
     blur: 0.75,
@@ -148,71 +141,63 @@ export class MapDoctorComponent implements OnInit, OnChanges {
 
   markerClusterGroup: L.MarkerClusterGroup;
 	markerClusterData: any[] = [];
-  markerClusterOptions: L.MarkerClusterGroupOptions;
+  markerClusterOptions: L.MarkerClusterGroupOptions ={
+    spiderfyOnMaxZoom:false,
+    disableClusteringAtZoom: 16,
+    polygonOptions: {
+      color: '#2d84c8',
+      weight: 4,
+      opacity: 1,
+      fillOpacity: 0.5
+    },
+    // spiderfyOnMaxZoom: true,
+    // showCoverageOnHover: false
+  };
 
   markerClusterReady(group: L.MarkerClusterGroup) {
 
 		this.markerClusterGroup = group;
 
 }
-getMarkerData() {
+setMarkerData() {
 
   const data: any[] = [];
 
-  // for(var doc of this.doctors.data)
-  // {
-  //  data.push(L.marker([doc.geoLat,doc.geoLon], {icon:this.doctorIcon}));
-  // }
+  for(var doc of this.doctors.data)
+  {
+   data.push(L.marker([doc.geoLat,doc.geoLon], {icon:this.doctorIcon}));
+  }
 
-  // for(var pha of this.pharmacies.data)
-  // {
-  //  data.push(L.marker([pha.geoLat,pha.geoLon], {icon:this.pharmacyIcon}));
-  // }
+  for(var pha of this.pharmacies.data)
+  {
+   data.push(L.marker([pha.geoLat,pha.geoLon], {icon:this.pharmacyIcon}));
+  }
     
 
   this.markerClusterData = data;
 
 }
 
-  onMapReady(map: L.Map) {
-    
-   map.once('mousemove', (event: L.LeafletMouseEvent) =>{
-    //this.getMarkerData();
-    // for(var doc of this.doctors.data)
-    // {
-    //  L.marker([doc.geoLat,doc.geoLon], {icon:this.doctorIcon}).addTo(map);
-    // }
-  
-    // for(var pha of this.pharmacies.data)
-    // {
-    //  L.marker([pha.geoLat,pha.geoLon], {icon:this.pharmacyIcon}).addTo(map);
-    // }
-    this.heatmapLayer.setData(this.heatmapData);
-   });
-  //this.getMarkerData();
 
-  //  //L.markerClusterGroup.bind(this.markerClusterData);
+onMapReady(map: L.Map) {
+    
+  // this.setMarkerData();
+  this.heatmapLayer.setData(this.heatmapData);
+
+
+   map.once('mousemove', (event: L.LeafletMouseEvent) =>{
+
+//  
+    
+    this.heatmapLayer.setData(this.heatmapData);
+
+   });
+  
+   
   
    
     map.on('mousemove', (event: L.LeafletMouseEvent) => {
-      // this.heatmapData.data.push({
-      //   geoLat: event.latlng.lat,
-      //   geoLon: event.latlng.lng,
-      //   intensity: 1
-      // });
-      L.marker([47.076668, 15.421371],{ icon:this.doctorIcon
-        // icon:icon({
-        //   iconSize: [25,41],
-        //   iconAnchor:[13,41],
-        //   iconUrl: 'leaflet/marker-icon.png',
-        //   shadowUrl: 'leaflet/marker-shadow.png'
-        // })
-      }).addTo(map);
-
       
-      //this.heatmapData.data = data;
-      // this.heatmapLayer.setData(this.heatmapData);
-
     });
   }
 }

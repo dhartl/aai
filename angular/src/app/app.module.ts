@@ -16,6 +16,9 @@ import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, Mat
 import { DialogPharmacyComponent } from './dialog-pharmacy/dialog-pharmacy.component';
 import {MatCardModule} from '@angular/material';
 import { PhDialogComponent } from './ph-dialog/ph-dialog.component';
+import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+
+
 
 @NgModule({
   imports: [
@@ -34,7 +37,8 @@ import { PhDialogComponent } from './ph-dialog/ph-dialog.component';
     MatCardModule,
     MatDialogModule,
     MatSliderModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    LeafletMarkerClusterModule
   ],
   entryComponents: [PhDialogComponent],
   declarations: [
