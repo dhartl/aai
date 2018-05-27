@@ -12,16 +12,15 @@
     </p>
 
     <div *ngFor="let insurance of insurances">
-      <input type="checkbox" [(ngModel)]="insurance.isChecked" [ngModelOptions]="{standalone: true}"> 
+      <mat-checkbox type="example-margin" [(ngModel)]="insurance.isChecked" [ngModelOptions]="{standalone: true}"> </mat-checkbox>
          {{insurance.name}}
-    </div>
-
+      </div>
     <br>
     <p>Choose the specialities of the doctors:     <button mat-raised-button (click)="onDeSelectAllSpecialities()"> (De-)Select all</button>    
     </p>
 
     <div *ngFor="let speciality of specialities">
-      <input type="checkbox" [(ngModel)]="speciality.isChecked" [ngModelOptions]="{standalone: true}"> 
+      <mat-checkbox type="example-margin" [(ngModel)]="speciality.isChecked" [ngModelOptions]="{standalone: true}"> </mat-checkbox>
          {{speciality.name}}
     </div>
   </mat-dialog-content>
