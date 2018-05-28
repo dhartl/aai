@@ -8,9 +8,9 @@ To use this project you need a mysql database running on port 3306 (mysql-defaul
 
 ### Setting up the database
 
-Install mysql on your local computer. You need to create a schema `aai`, with an user `aai`and password `aai`. The application will use this user to connect to the database. You also have to create the database schema from the [mysql-model](../database/aai_database.mwb).
+Install mysql on your local computer. You need to create a schema `aai`, with an user `aai`and password `aai`. The application will use this user to connect to the database. You also have to create the database schema from the [mysql-model](../web/database/aai_database.mwb).
 
-To reset the database you can use the [reset database sql file](../database/reset_database.sql).
+To reset the database you can use the [reset database sql file](../web/database/reset_database.sql).
 
 ### Launching the application
 
@@ -24,7 +24,7 @@ in the command line.
 
 ## Using the APIs
 
-Examples for the usage of all endpoints can be found in the [postman collection](../postman/postman_requests.json). To import sample data with the import endpoints you can use the json-files in the [data-folder](../../data). 
+Examples for the usage of all endpoints can be found in the [postman collection](../web/postman/postman_requests.json). To import sample data with the import endpoints you can use the json-files in the [data-folder](../data). 
 
 
 ## Built With
