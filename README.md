@@ -6,9 +6,9 @@ This project crawls location data of doctors and pharmacies in austria and displ
 
 The project is divided into three subprojects each using different frameworks. 
 
-* [Crawler](../crawler) - Crawls doctor and pharmacy data from the web
-* [Backend](../web) - Backend that stores the data and provides an api for the frontend
-* [Frontend](../frontend) - Frontend that displays the data in a map
+* [Crawler](./crawler) - Crawls doctor and pharmacy data from the web
+* [Backend](./web) - Backend that stores the data and provides an api for the frontend
+* [Frontend](./frontend) - Frontend that displays the data in a map
 
 ## License
 
