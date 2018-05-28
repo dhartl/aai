@@ -96,6 +96,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+		          <profiles>
+		            <profile>mysql</profile>
+		          </profiles>
+		        </configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
