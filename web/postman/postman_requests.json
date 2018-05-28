@@ -162,6 +162,32 @@
 					"response": []
 				},
 				{
+					"name": "Export States",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9872/aai/state",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Export Insurances",
 					"request": {
 						"method": "GET",
@@ -272,6 +298,35 @@
 					"response": []
 				},
 				{
+					"name": "Export Doctors - filtered by state",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"specialityIds\":[1467,1468], \"insuranceIds\":[57], \"states\":[\"Burgenland\",\"Kärnten\"]}"
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/doctor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"doctor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Export Heatmap",
 					"request": {
 						"method": "POST",
@@ -284,6 +339,35 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"doctorRequest\":{\"specialityIds\":[1467,1468], \"insuranceIds\":[57]},\n\t\"maxDistanceInMeter\":2000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/heatmap",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"heatmap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Heatmap - intensity reference",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"doctorRequest\":{\"specialityIds\":[1467,1468], \"insuranceIds\":[57]},\n\t\"maxDistanceInMeter\":2000,\n\t\"intensityReference\":20\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9872/aai/heatmap",
