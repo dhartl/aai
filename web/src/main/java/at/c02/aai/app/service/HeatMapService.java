@@ -35,15 +35,25 @@ public class HeatMapService {
 
 		List<DistanceBean> distances = distanceService.createDistances(pharmacies, doctors,
 				request.getMaxDistanceInMeter());
-		double maxCount = Math.max(distances.stream().mapToLong(DistanceBean::getCount).max().orElse(0), 1);
-		logger.info("normalizing distances to max {}", maxCount);
+		double intensityReference = getHeatMapIntensityReference(distances, request.getIntensityReference());
+		logger.info("normalizing distances to max {}", intensityReference);
 
-		return distances.stream().map(distance -> mapToDto(distance, maxCount)).collect(Collectors.toList());
+		return distances.stream().filter(distance -> distance.getCount() > 0)
+				.map(distance -> mapToDto(distance, intensityReference)).collect(Collectors.toList());
 	}
 
-	private HeatMapItemDTO mapToDto(DistanceBean distanceBean, double maxCount) {
+	private double getHeatMapIntensityReference(List<DistanceBean> distances, Integer intensityReference) {
+		long maxDistanceCount = Math.max(distances.stream().mapToLong(DistanceBean::getCount).max().orElse(0), 1);
+		if (intensityReference != null && intensityReference > 0) {
+			return Math.min(intensityReference, maxDistanceCount);
+		} else {
+			return maxDistanceCount;
+		}
+	}
+
+	private HeatMapItemDTO mapToDto(DistanceBean distanceBean, double intensityReference) {
 		return new HeatMapItemDTO(distanceBean.getGeoLat(), distanceBean.getGeoLon(),
-				BigDecimal.valueOf((distanceBean.getCount()) / maxCount));
+				BigDecimal.valueOf(Math.min((distanceBean.getCount()) / intensityReference, 1)));
 	}
 
 }
