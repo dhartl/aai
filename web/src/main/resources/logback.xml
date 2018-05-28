@@ -12,4 +12,5 @@
 	<!-- web -->
 	<logger name="org.springframework.web" level="INFO"/>
 	<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG" />
+	<logger name="at" level="DEBUG" />
 </configuration>

@@ -1,0 +1,11 @@
+<div class="mapDoctor"
+     leaflet
+     [leafletOptions]="options"
+     [leafletMarkerCluster] ="markerClusterData"
+     [leafletMarkerClusterOptions]="markerClusterOptions"
+     (leafletMapReady)="onMapReady($event)"
+     (leafletMarkerClusterReady)="markerClusterReady($event)">
+      </div>
+
+       <!-- [leafletMarkerCluster]="markerClusterData"
+     [leafletMarkerClusterOptions]="markerClusterOptions" -->

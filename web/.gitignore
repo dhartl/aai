@@ -19,7 +19,7 @@ local.properties
 .externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
-*.launch
+#*.launch
 
 # PyDev specific (Python IDE for Eclipse)
 *.pydevproject
@@ -122,3 +122,6 @@ buildNumber.properties
 
 
 # End of https://www.gitignore.io/api/maven
+
+# Vaadin style
+/src/main/webapp/VAADIN/themes/aai/styles.css

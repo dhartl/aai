@@ -1,19 +1,27 @@
 package at.c02.aai.app.db.entity;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import at.c02.aai.app.service.bean.HasGeoCoordinates;
 
 @Entity
 @Table(name = "facility")
-public class Facility {
+public class Facility extends BaseEntity implements HasGeoCoordinates {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +34,12 @@ public class Facility {
     private String title;
     @Column(name = "street", length = 255)
     private String street;
-    @Column(name = "houseNumber", length = 100)
-    private String houseNumber;
     @Column(name = "zipCode", length = 20)
     private String zipCode;
     @Column(name = "city", length = 255)
     private String city;
+    @Column(name = "state", length = 255)
+    private String state;
     /**
      * Geo-Latitude WGS84
      */
@@ -42,6 +50,25 @@ public class Facility {
      */
     @Column(name = "geoLon")
     private BigDecimal geoLon;
+
+    @Column(name = "telephoneNr", length = 100)
+    private String telephoneNr;
+    @Column(name = "email", length = 255)
+    private String email;
+    @Column(name = "url", length = 1024)
+    private String url;
+    @Column(name = "srcUrl", length = 1024)
+    private String srcUrl;
+    @Column(name = "hoursTotal")
+    private Double hoursTotal;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "facilityId")
+    private Set<Hours> hours = new LinkedHashSet<>(0);
+
+    @Override
+    public Long getId() {
+	return getFacilityId();
+    }
 
     public Long getFacilityId() {
 	return facilityId;
@@ -75,14 +102,6 @@ public class Facility {
 	this.street = street;
     }
 
-    public String getHouseNumber() {
-	return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-	this.houseNumber = houseNumber;
-    }
-
     public String getZipCode() {
 	return zipCode;
     }
@@ -99,6 +118,15 @@ public class Facility {
 	this.city = city;
     }
 
+    public String getState() {
+	return state;
+    }
+
+    public void setState(String state) {
+	this.state = state;
+    }
+
+    @Override
     public BigDecimal getGeoLat() {
 	return geoLat;
     }
@@ -107,12 +135,61 @@ public class Facility {
 	this.geoLat = geoLat;
     }
 
+    @Override
     public BigDecimal getGeoLon() {
 	return geoLon;
     }
 
     public void setGeoLon(BigDecimal geoLon) {
 	this.geoLon = geoLon;
+    }
+
+    public String getTelephoneNr() {
+	return telephoneNr;
+    }
+
+    public void setTelephoneNr(String telephoneNr) {
+	this.telephoneNr = telephoneNr;
+    }
+
+    public String getEmail() {
+	return email;
+    }
+
+    public void setEmail(String email) {
+	this.email = email;
+    }
+
+    public String getUrl() {
+	return url;
+    }
+
+    public void setUrl(String url) {
+	this.url = url;
+    }
+
+    public String getSrcUrl() {
+	return srcUrl;
+    }
+
+    public void setSrcUrl(String srcUrl) {
+	this.srcUrl = srcUrl;
+    }
+
+    public Double getHoursTotal() {
+	return hoursTotal;
+    }
+
+    public void setHoursTotal(Double hoursTotal) {
+	this.hoursTotal = hoursTotal;
+    }
+
+    public Set<Hours> getHours() {
+	return hours;
+    }
+
+    public void setHours(Set<Hours> hours) {
+	this.hours = hours;
     }
 
 }

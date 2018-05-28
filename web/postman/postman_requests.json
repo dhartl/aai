@@ -1,17 +1,16 @@
 {
 	"info": {
+		"_postman_id": "b0f8ff23-385b-4d8e-9f24-73408841f71e",
 		"name": "AAI",
-		"_postman_id": "5f512515-6f02-4eac-9fe2-3d2cc7e191ca",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Doctor",
-			"description": "",
+			"name": "Import",
+			"description": null,
 			"item": [
 				{
-					"name": "CreateDoctor1",
+					"name": "Import Doctors",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -21,63 +20,11 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"Dr. Maik Gottschalk\", \"geoLat\":\"47.055775\", \"geoLon\":\"15.410430\"}"
+							"mode": "file",
+							"file": {}
 						},
 						"url": {
-							"raw": "http://localhost:9872/aai/doctor",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"doctor"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "GetDoctors",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"Dr. Maik Gottschalk\", \"geoLat\":\"47.055775\", \"geoLon\":\"15.410430\"}"
-						},
-						"url": {
-							"raw": "http://localhost:9872/aai/doctor",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"doctor"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "DeleteDoctor",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "http://localhost:9872/aai/doctor/1",
+							"raw": "http://localhost:9872/aai/doctor/import",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -86,21 +33,14 @@
 							"path": [
 								"aai",
 								"doctor",
-								"1"
+								"import"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Pharmacy",
-			"description": "",
-			"item": [
+				},
 				{
-					"name": "CreatePharmacy1",
+					"name": "Import pharmacys",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -110,63 +50,11 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"St. Hubertus Apotheke\", \"geoLat\":\"47.041650\", \"geoLon\":\"15.467077\"}"
+							"mode": "file",
+							"file": {}
 						},
 						"url": {
-							"raw": "http://localhost:9872/aai/pharmacy",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"pharmacy"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "GetPharmacys",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"title\":\"Dr. Maik Gottschalk\", \"geoLat\":\"47.055775\", \"geoLon\":\"15.410430\"}"
-						},
-						"url": {
-							"raw": "http://localhost:9872/aai/pharmacy",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9872",
-							"path": [
-								"aai",
-								"pharmacy"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "DeletePharmacy",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {},
-						"url": {
-							"raw": "http://localhost:9872/aai/pharmacy/1",
+							"raw": "http://localhost:9872/aai/pharmacy/import",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -175,10 +63,324 @@
 							"path": [
 								"aai",
 								"pharmacy",
-								"1"
+								"import"
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import insurances",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
 						},
-						"description": ""
+						"url": {
+							"raw": "http://localhost:9872/aai/insurance/import",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"insurance",
+								"import"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import specialities",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/speciality/import",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"speciality",
+								"import"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export",
+			"description": "",
+			"item": [
+				{
+					"name": "Export Specialities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9872/aai/speciality",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"speciality"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export States",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9872/aai/state",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Insurances",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9872/aai/insurance",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"insurance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Pharmacies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:9872/aai/pharmacy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"pharmacy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Doctors - all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/doctor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"doctor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Doctors - filtered",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"specialityIds\":[1467,1468], \"insuranceIds\":[57]}"
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/doctor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"doctor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Doctors - filtered by state",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"specialityIds\":[1467,1468], \"insuranceIds\":[57], \"states\":[\"Burgenland\",\"Kärnten\"]}"
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/doctor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"doctor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Heatmap",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"doctorRequest\":{\"specialityIds\":[1467,1468], \"insuranceIds\":[57]},\n\t\"maxDistanceInMeter\":2000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/heatmap",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"heatmap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Heatmap - intensity reference",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"doctorRequest\":{\"specialityIds\":[1467,1468], \"insuranceIds\":[57]},\n\t\"maxDistanceInMeter\":2000,\n\t\"intensityReference\":20\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9872/aai/heatmap",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9872",
+							"path": [
+								"aai",
+								"heatmap"
+							]
+						}
 					},
 					"response": []
 				}

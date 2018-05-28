@@ -13,31 +13,36 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "pharmacy")
-public class Pharmacy {
+public class Pharmacy extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pharmacyId")
-    private Long pharmacyId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "pharmacyId")
+	private Long pharmacyId;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "facilityId", nullable = false)
-    private Facility facility;
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "facilityId", nullable = false)
+	private Facility facility;
 
-    public Long getPharmacyId() {
-	return pharmacyId;
-    }
+	@Override
+	public Long getId() {
+		return getPharmacyId();
+	}
 
-    public void setPharmacyId(Long pharmacyId) {
-	this.pharmacyId = pharmacyId;
-    }
+	public Long getPharmacyId() {
+		return pharmacyId;
+	}
 
-    public Facility getFacility() {
-	return facility;
-    }
+	public void setPharmacyId(Long pharmacyId) {
+		this.pharmacyId = pharmacyId;
+	}
 
-    public void setFacility(Facility facility) {
-	this.facility = facility;
-    }
+	public Facility getFacility() {
+		return facility;
+	}
+
+	public void setFacility(Facility facility) {
+		this.facility = facility;
+	}
 
 }

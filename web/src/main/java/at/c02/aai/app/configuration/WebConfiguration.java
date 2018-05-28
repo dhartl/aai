@@ -3,6 +3,7 @@ package at.c02.aai.app.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -16,6 +17,11 @@ public class WebConfiguration implements WebMvcConfigurer {
 		loggingFilter.setIncludePayload(true);
 		loggingFilter.setIncludeHeaders(false);
 		return loggingFilter;
+	}
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**");
 	}
 
 }
