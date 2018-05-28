@@ -37,6 +37,9 @@ public class DoctorRepositoryCustomImpl implements DoctorRepositoryCustom {
 		if (request.getSpecialityIds() != null && !request.getSpecialityIds().isEmpty()) {
 			where = where.and(doctor.specialities.any().specialityId.in(request.getSpecialityIds()));
 		}
+		if (request.getStates() != null && !request.getStates().isEmpty()) {
+			where = where.and(doctor.facility.state.in(request.getStates()));
+		}
 
 		Map<String, Expression<?>> doctorOutDtoMapping = new HashMap<>();
 		doctorOutDtoMapping.put("id", doctor.doctorId);
