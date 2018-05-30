@@ -2,7 +2,12 @@
   <h2 mat-dialog-title>Map Settings</h2>
   <hr>
   <mat-dialog-content>
-
+      <p>Choose the states for the heatmap: <button mat-raised-button (click)="onDeSelectionStates()">(De-)Select all</button></p>
+    <div *ngFor="let state of states">
+      <mat-checkbox type="example-margin" [(ngModel)]="state.isChecked" [ngModelOptions]="{standalone: true}"> </mat-checkbox>
+         {{state.name}}
+      </div>
+<br>
     <p>Choose the distance for the calculation of the heatmap values: (in k meter)</p>
     <mat-slider thumbLabel [(ngModel)]="heatmapRequest.maxDistanceInMeter"
     [displayWith]="formatLabel"
@@ -23,6 +28,12 @@
       <mat-checkbox type="example-margin" [(ngModel)]="speciality.isChecked" [ngModelOptions]="{standalone: true}"> </mat-checkbox>
          {{speciality.name}}
     </div>
+<br>
+    <!-- <p>Choose the max value for the calculation of the heatmap values: (in number of doctors) </p>
+    <mat-slider thumbLabel [(ngModel)]="heatmapRequest.maxDistanceInMeter"
+    [displayWith]="formatLabel"
+     style="min-width: 350px;" thumbLabel tickInterval="1000" min="1000" max="50000" step="1000" value="3000"></mat-slider>
+    <br> -->
   </mat-dialog-content>
   <hr>
   <mat-dialog-actions>

@@ -32,7 +32,8 @@ export class AppComponent  {
   heatmapRequest: HeatmapRequest ={
     doctorRequest: {
       insuranceIds:[9],
-      specialityIds:[]
+      specialityIds:[],
+      states:[],
     },
     maxDistanceInMeter :2000
     }

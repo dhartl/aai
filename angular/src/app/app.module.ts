@@ -6,10 +6,8 @@ import { AppRoutingModule }     from './app-routing.module';
 import {LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { AppComponent }         from './app.component';
 import { MapDoctorComponent} from './maps/mapDoctor/mapDoctor.component';
-import { MapPharmacyComponent } from './maps/mapPharmacy/mapPharmacy.component';
 import { FacilitySearchService } from './services/facilitysearch.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavbarComponent } from './navbar/navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import {MatDialogModule, MatSliderModule, MatCheckboxModule} from '@angular/material';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
@@ -44,8 +42,6 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
   declarations: [
     AppComponent,
     MapDoctorComponent,
-    MapPharmacyComponent,
-    NavbarComponent,
     DialogPharmacyComponent,
     PhDialogComponent,    
   ],

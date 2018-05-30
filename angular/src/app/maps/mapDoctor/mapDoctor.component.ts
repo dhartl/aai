@@ -25,46 +25,59 @@ declare var markers;
   templateUrl: 'mapDoctor.component.html',
   styleUrls: ['./mapDoctor.component.css']
 })
-export class MapDoctorComponent implements OnInit, OnChanges {
+export class MapDoctorComponent implements OnInit {
 
   @Output() changed = new EventEmitter<HeatmapRequest>();
 
-  ngOnInit(): void {
-    this.doctorRequest = {
-      insuranceIds : [9],
-      specialityIds: []
-    }
-    this.heatmapRequest = {
-      doctorRequest: this.doctorRequest,
-      maxDistanceInMeter:2000
-    }
-    this.getDataFromBackend(this.doctorRequest,this.heatmapRequest);
-    this.heatmapLayer.setData(this.heatmapData);
-
-  }
-
   @Input()heatmapRequest:HeatmapRequest;
+  
+  heatmapData = {
+    data: [<HeatmapPoint>{ geoLat:23.2,geoLon:23.434, intensity:3}]
+  };
+ pharmacies = {
+   data: [<Pharmacy>{geoLat:47.076668, geoLon:15.821371,id:2,name:"Campus02"}]
+ };
+ doctors = {
+   data: [<Doctor>{geoLat:47.076668, geoLon:15.421371, id:3, name:"Doctor Karate"}]
+ };
+ 
+ doctorRequest = <DoctorRequest>{
+   insuranceIds: [],
+   specialityIds: [],
+   states: [],
+ };
 
-  ngOnChanges(changes: {[propKey: string]:SimpleChange}){
-    this.getDataFromBackend(this.heatmapRequest.doctorRequest,this.heatmapRequest); 
-    this.heatmapLayer.setData(this.heatmapData);
+ constructor(private _DoctorSearch: FacilitySearchService){
+};
+ 
+ ngOnInit(): void {
+  this.doctorRequest = {
+    insuranceIds : [9],
+    specialityIds: [],
+    states: []
   }
+  this.heatmapRequest = {
+    doctorRequest: this.doctorRequest,
+    maxDistanceInMeter:2000
+  }
+  this.getDataFromBackend(this.doctorRequest,this.heatmapRequest);
+  this.heatmapLayer.setData(this.heatmapData);
 
-  changeData()
+}
+
+  
+changeData()
   {
     this.doctorRequest = this.heatmapRequest.doctorRequest;
-    this.getDataFromBackend(this.doctorRequest,this.heatmapRequest); 
-    this.heatmapLayer.setData(this.heatmapData);
-    this.setMarkerData();
-
+    this.getDataFromBackend(this.doctorRequest,this.heatmapRequest)
   }
 
-  constructor(private _DoctorSearch: FacilitySearchService){
-     };
+ 
 
   getDataFromBackend(dr:DoctorRequest, hr:HeatmapRequest){
     this._DoctorSearch.postHeatmap(this.heatmapRequest).subscribe((data) => {
       this.heatmapData.data = data;
+      this.heatmapLayer.setData(this.heatmapData);
     });
 
     this._DoctorSearch.getPharmacies().subscribe((data) =>
@@ -75,23 +88,12 @@ export class MapDoctorComponent implements OnInit, OnChanges {
     {
       this.doctors.data = data;
     })
+
+    this.setMarkerData();
+
   }
   
-   heatmapData = {
-     data: [<HeatmapPoint>{ geoLat:23.2,geoLon:23.434, intensity:3}]
-   };
-  pharmacies = {
-    data: [<Pharmacy>{geoLat:47.076668, geoLon:15.821371,id:2,name:"Campus02"}]
-  };
-  doctors = {
-    data: [<Doctor>{geoLat:47.076668, geoLon:15.421371, id:3, name:"Doctor Karate"}]
-  };
-  
-  doctorRequest = <DoctorRequest>{
-    insuranceIds: [],
-    specialityIds: []
-  };
-
+ 
   pharmacyIcon = L.icon({
     iconSize: [40,45],
     iconAnchor:[13,41],
@@ -104,7 +106,6 @@ export class MapDoctorComponent implements OnInit, OnChanges {
       iconUrl: 'assets/medicine.png'
     });
  
-    layerdoctors:L.Layer;
 
   heatmapLayer = new HeatmapOverlay({
     radius: 12,
@@ -142,16 +143,18 @@ export class MapDoctorComponent implements OnInit, OnChanges {
   markerClusterGroup: L.MarkerClusterGroup;
 	markerClusterData: any[] = [];
   markerClusterOptions: L.MarkerClusterGroupOptions ={
-    spiderfyOnMaxZoom:false,
+    showCoverageOnHover:true,
+    spiderfyOnMaxZoom:true,
     disableClusteringAtZoom: 16,
+    
     polygonOptions: {
-      color: '#2d84c8',
-      weight: 4,
+      fillColor: '#1b2557',
+      color: '#000000',
+      weight: 0.5,
       opacity: 1,
-      fillOpacity: 0.5
+      fillOpacity: 0.5,
+      
     },
-    // spiderfyOnMaxZoom: true,
-    // showCoverageOnHover: false
   };
 
   markerClusterReady(group: L.MarkerClusterGroup) {
@@ -180,23 +183,18 @@ setMarkerData() {
 
 
 onMapReady(map: L.Map) {
-    
-  // this.setMarkerData();
-  this.heatmapLayer.setData(this.heatmapData);
 
+  markers.on('clusterclick', function (a) {
+    a.layer.spiderfy();
+   });
 
    map.once('mousemove', (event: L.LeafletMouseEvent) =>{
 
-//  
-    
-    this.heatmapLayer.setData(this.heatmapData);
+  //  this.heatmapLayer.setData(this.heatmapData);
 
    });
   
-   
-  
-   
-    map.on('mousemove', (event: L.LeafletMouseEvent) => {
+      map.on('mousemove', (event: L.LeafletMouseEvent) => {
       
     });
   }

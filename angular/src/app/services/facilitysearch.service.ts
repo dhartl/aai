@@ -55,29 +55,34 @@ export class FacilitySearchService{
         .get(url);
     }
 
+    getStatesAsString()
+    {
+        let url = "http://localhost:9872/aai/state";
+        return this.http.get(url,httpOptions).pipe(catchError(this.handleError));
+    }
 
     getSpecialities()
     {
         let url = "http://localhost:9872/aai/speciality";
-        return this.http.get<Speciality[]>(url,httpOptions).pipe(catchError(this.handleError));;
+        return this.http.get<Speciality[]>(url,httpOptions).pipe(catchError(this.handleError));
     }
 
     getInsurances()
     {
         let url = "http://localhost:9872/aai/insurance";
-        return this.http.get<Insurance[]>(url,httpOptions).pipe(catchError(this.handleError));;
+        return this.http.get<Insurance[]>(url,httpOptions).pipe(catchError(this.handleError));
     }
 
     getPharmacies()
     {
         let url = "http://localhost:9872/aai/pharmacy"
-        return this.http.get<Pharmacy[]>(url,httpOptions).pipe(catchError(this.handleError));;
+        return this.http.get<Pharmacy[]>(url,httpOptions).pipe(catchError(this.handleError));
     }
 
     postDoctor(dr:DoctorRequest):Observable<Doctor[]>
     {
         let url = "http://localhost:9872/aai/doctor"
-        return this.http.post<Doctor[]>(url,dr,httpOptions).pipe(catchError(this.handleError));;
+        return this.http.post<Doctor[]>(url,dr,httpOptions).pipe(catchError(this.handleError));
     }
 
     postHeatmap(hr:HeatmapRequest):Observable<HeatmapPoint[]>

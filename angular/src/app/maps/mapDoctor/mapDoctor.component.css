@@ -1,5 +1,18 @@
 .mapDoctor{
     height: 90%;
     width: 100%;
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
 }
+.marker-cluster div {
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    margin-top: 5px;
 
+    text-align: center;
+    border-radius: 15px;
+    font: 16px "freesans", Arial, Helvetica, sans-serif;
+    text-shadow: 1px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+    }

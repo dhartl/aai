@@ -15,7 +15,8 @@ export class DialogPharmacyComponent implements OnInit {
   dialogResult: HeatmapRequest = {
     doctorRequest: {
     insuranceIds: [],
-    specialityIds: []
+    specialityIds: [],
+    states:[],
     },
     maxDistanceInMeter: 2000,
     }
@@ -24,17 +25,17 @@ export class DialogPharmacyComponent implements OnInit {
   
 
   constructor(public dialog: MatDialog) {
-    // this.dialogResult.insuranceIds = [];
-    // this.dialogResult.insuranceIds = [];
+  
   }
 
+  firstClick: boolean = true;
   
   ngOnInit() {
   }
   openDialog() {
+    this.firstClick = false;
     let dialogRef = this.dialog.open(PhDialogComponent, {
       width: '600px',
-      //data: 'This text is passed into the dialog!'
     });
 
     dialogRef.afterClosed().subscribe(result => {
