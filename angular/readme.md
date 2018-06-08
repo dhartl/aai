@@ -18,9 +18,6 @@ This angular frontend is responsible for displaying the heatmap of the aai-proje
 * [Asymmetrik ngx-leaflet](https://github.com/Asymmetrik/ngx-leaflet/) - LeafletJs for Angular 
 
 
-## Authors
-
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
