@@ -1,15 +1,8 @@
 <mat-toolbar>
 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-       
-      <!-- </button> -->
       <span>Pharmacy Location Analyzer</span>
-        
-      <!-- <mat-nav-list>
-        <a mat-list-item routerLink="mapDoctor">Doctor Focus</a>
-        <a mat-list-item routerLink="mapPharmacy">Pharmacy Focus</a>
-      </mat-nav-list> -->
+    
       <app-dialog-pharmacy (changed)="changeMapSettings($event)" style="padding-left: 100px"></app-dialog-pharmacy>
     </mat-toolbar>
-<!-- <button style="top: 0%; right: 0%;"></button> -->
 <mapDoctor></mapDoctor>
 

@@ -4,7 +4,9 @@ import {MatDialogRef, MatSliderModule} from '@angular/material';
 import { FacilitySearchService } from '../services/facilitysearch.service';
 import { DoctorRequest } from '../entities/doctorRequest';
 import { HeatmapRequest } from '../entities/heatmapRequest';
+import { State } from '../entities/state';
 
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-ph-dialog',
@@ -17,7 +19,8 @@ export class PhDialogComponent implements OnInit {
 
   doctorRequest : DoctorRequest={
    insuranceIds: [],
-   specialityIds: []
+   specialityIds: [],
+   states: []
   }
   heatmapRequest : HeatmapRequest={
     doctorRequest : this.doctorRequest,
@@ -39,6 +42,7 @@ export class PhDialogComponent implements OnInit {
   writeData(){
     this.doctorRequest.insuranceIds = [];
     this.doctorRequest.specialityIds = [];
+    this.doctorRequest.states = [];
     for(var ins of this.insurances)
     {
       if(ins.isChecked)
@@ -53,6 +57,13 @@ export class PhDialogComponent implements OnInit {
         this.doctorRequest.specialityIds.push(spec.id);
       }
     }
+    for (var st of this.states)
+    {
+      if(st.isChecked)
+      {
+        this.doctorRequest.states.push(st.name);
+      }
+    }
 
     this.heatmapRequest.doctorRequest = this.doctorRequest;
   }
@@ -65,16 +76,37 @@ export class PhDialogComponent implements OnInit {
   specialities = [{id:1, name:"halllo" ,isChecked: false},
   {id:2, name:"hallo2" ,isChecked: true}]
 
+  //states = ["Land1", "Land2"];
+
+  states = [
+    <State>{
+      name: "land1",
+      isChecked: false
+    }
+  ]
+
   
   ngOnInit() {
     this._getSettingData.getInsurances().subscribe((data) =>{
     this.insurances = data;
     this.insurances.forEach(x=> x.isChecked = true);
       } );
-      this._getSettingData.getSpecialities().subscribe((data) =>{
+    this._getSettingData.getSpecialities().subscribe((data) =>{
         this.specialities = data;
         this.specialities.forEach(x=> x.isChecked = true);
           } );
+
+    this._getSettingData.getStatesAsString().subscribe((data: string[]) => {
+      this.states = [];
+      for(var s of data)
+      {
+        var tempstate = <State> {
+          name: s,
+          isChecked: true
+        }
+        this.states.push(tempstate);
+      }
+    });
   }
 
   onCloseConfirm() {
@@ -129,4 +161,34 @@ export class PhDialogComponent implements OnInit {
   }
   else{
     this.deselectionSpecialites = true;
-  }}}
+  }
+}
+deselectionStates : boolean = true;
+
+  onDeSelectionStates()
+  { 
+    for(var st of this.states)
+    {
+      if(this.deselectionStates)
+    {
+      st.isChecked = false;
+      
+    }
+    else{
+      st.isChecked = true;
+    }
+  }
+  if (this.deselectionStates)
+  {
+    this.deselectionStates = false;
+  }
+  else{
+    this.deselectionStates = true;
+  }
+}
+
+
+
+}
+
+
